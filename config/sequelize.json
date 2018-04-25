@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "root",
+    "password": "jhl1305",
+    "database": "test",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": "jhl1305",
+    "database": "scott",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "root",
+    "password": "jhl1305",
+    "database": "movie",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}
