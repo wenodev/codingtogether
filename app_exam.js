@@ -1,4 +1,5 @@
 var express = require('express');
+var fs = require('fs');
 var app = express();
 
 // connect To DB
@@ -16,13 +17,16 @@ models.sequelize.sync()
 
 app.get('/',function(req,res) {
 	models.User.findAll().then(function(result) {
-		res.json(result);
+	res.json(result);	
 	}).catch(function(err) {
 		console.log(err);
 	});
 });
 app.get('/insert',function(req,res) {
-	models.User.create({user_id: 'asdf', password: 'pwd'},{ fields:['user_id','password']})
+	models.User.create( {
+		user_id: 'test',
+		password: 'test'
+	})
   .then(result => {
      res.json(result);
   })
