@@ -1,13 +1,27 @@
 const express = require('express');
+const sequelize = require('sequelize');
 const parse = require('parse-json');
 const app = express();
 const fs = require('fs');
 const spawn = require('child_process').spawn;
 const bodyParser = require('body-parser');
-
 app.set('view engine','pug');
 app.set('views','./views');
 app.use(bodyParser.urlencoded({extended: false}))
+
+// connect To DB
+const models = require('./models');
+models.sequelize.sync()
+  .then(() => {
+    console.log('✓ DB connection success.');
+    console.log('  Press CTRL-C to stop\n');
+  })
+  .catch(err => {
+    console.error(err);
+    console.log('✗ DB connection error. Please make sure DB is running.');
+    process.exit();
+  });
+
 
 app.get('/form',function(req,res) {
 	res.render('form');
@@ -40,6 +54,13 @@ app.post('/form_receiver',function(req,res) {
 			});
 			run.on('close', function (output) {
             console.log('stdout: ' + output);
+			});
+			models.Code.create( {
+				title: title,
+				code: source 
+			})
+			.catch(err => {
+				console.error(err);
 			});
 		}
 	});
