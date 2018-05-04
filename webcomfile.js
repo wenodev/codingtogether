@@ -8,7 +8,8 @@ const bodyParser = require('body-parser');
 app.set('view engine','pug');
 app.set('views','./views');
 app.use(bodyParser.urlencoded({extended: false}))
-
+//bootstrap
+app.use(express.static(__dirname + '/public'));
 // connect To DB
 const models = require('./models');
 models.sequelize.sync()
@@ -29,13 +30,22 @@ app.get('/form',function(req,res) {
 app.post('/form_receiver',function(req,res) {
 	var title = req.body.title;
 	var description = req.body.description;
+	var language = req.body.language;
 	var source = description.split(/\r\n|\r\n/).join("\n");
-	var file = 'test.c';
-	fs.writeFile('test.c',source,'utf8',function(error) {
+	var file;
+	if(language =='C')
+		file = 'test.c';
+	else if(language == 'C++')
+		file = 'test.cpp';
+	else
+		file = 'Test.java';
+	
+	fs.writeFile(file,source,'utf8',function(error) {
 		console.log('write end');
 	});
-
-	var compile = spawn('gcc',['test.c']);
+	var compile = spawn('g++',[file]);
+	if(language == 'Java')
+		compile = spawn('javac',[file]);
 	compile.stdout.on('data',function(data) {
 		console.log('stdout: '+data);
 	});
