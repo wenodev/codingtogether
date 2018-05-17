@@ -1,0 +1,26 @@
+html
+  head
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js')
+  body
+    input#msg(type='text')
+    input#ajax_test(type='button', value='ajax_test')
+    // 이곳에 결과 값이 붙는다.
+    #result
+    // ajax 작동 로직
+    script.
+      $('#ajax_test').click( function() {
+      $('#result').html('');
+      $.ajax({
+      url: '/ajax',                //주소
+      dataType: 'json',                  //데이터 형식
+      type: 'POST',                      //전송 타입
+      data: {'msg':$('#msg').val()},      //데이터를 json 형식, 객체형식으로 전송
+      success: function(result) {          //성공했을 때 함수 인자 값으로 결과 값 나옴
+      if ( result['result'] == true ) {
+      $('#result').html(result['msg']);
+      }
+      } //function끝
+      }); // ------      ajax 끝-----------------
+      })
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js')
+

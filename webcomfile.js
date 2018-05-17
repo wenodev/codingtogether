@@ -7,11 +7,14 @@ const spawn = require('child_process').spawn;
 const bodyParser = require('body-parser');
 app.set('view engine','pug');
 app.set('views','./views');
-app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 //bootstrap
 app.use(express.static(__dirname + '/public'));
 // connect To DB
 const models = require('./models');
+
+var c;
 models.sequelize.sync()
   .then(() => {
     console.log('✓ DB connection success.');
@@ -24,28 +27,22 @@ models.sequelize.sync()
   });
 
 
-app.get('/form',function(req,res) {
-	res.render('form');
+app.get('/form',function(req,res){
+	res.render("form");
 });
-app.post('/form_receiver',function(req,res) {
-	var title = req.body.title;
-	var description = req.body.description;
-	var language = req.body.language;
-	var source = description.split(/\r\n|\r\n/).join("\n");
-	var file;
-	if(language =='C')
-		file = 'test.c';
-	else if(language == 'C++')
-		file = 'test.cpp';
-	else
-		file = 'Test.java';
+
+app.post('/form_receive',function(req,res) {
+	//var title = req.body.title;
+	//var language = req.body.language;
+	var code = req.body.code;
+	console.log('넘어온 코드 : '+code);
+	var source = code.split(/\r\n|\r\n/).join("\n");
+	var file='test.c';
 	
 	fs.writeFile(file,source,'utf8',function(error) {
 		console.log('write end');
 	});
-	var compile = spawn('g++',[file]);
-	if(language == 'Java')
-		compile = spawn('javac',[file]);
+	var compile = spawn('gcc',[file]);
 	compile.stdout.on('data',function(data) {
 		console.log('stdout: '+data);
 	});
@@ -54,19 +51,20 @@ app.post('/form_receiver',function(req,res) {
 	});
 	compile.on('close',function(data){
 		if(data ==0) {
-			var run = spawn('./a.out',[]);
+			var run = spawn('./a.out',[]);	
 			run.stdout.on('data',function(output){
 				console.log('컴파일 완료');
-				res.send('컴파일 결과 : '+output);
+				var responseData = {'result':'ok','output': output.toString('utf8')};
+				res.json(responseData);
 			});
 			run.stderr.on('data', function (output) {
-            console.log(String(output));
+				console.log(String(output));
 			});
 			run.on('close', function (output) {
-            console.log('stdout: ' + output);
+				console.log('stdout: ' + output);
 			});
 			models.Code.create( {
-				title: title,
+				title: 'test1',
 				code: source 
 			})
 			.catch(err => {
@@ -74,9 +72,6 @@ app.post('/form_receiver',function(req,res) {
 			});
 		}
 	});
-});
-app.get('/',function(req,res) {
-	res.send('hello');
 });
 
 app.listen(3000,function() {
