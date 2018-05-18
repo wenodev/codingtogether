@@ -36,7 +36,7 @@ html(lang='en')
 			h3.text-muted 코딩봇 
 			.jumbotron
 				h1 문제
-				select#language(name='language') 
+				select#language(name='language' onchange='selectedLanguage.call(this,event)') 
 					option(value='c') C
 					option(value='c++') C++
 					option(value='java') Java
@@ -65,6 +65,19 @@ html(lang='en')
 						if(result.result !='ok')return;
 						document.getElementById('output').value=result.output;
 						});
+					}
+					function selectedLanguage(event){
+						switch(this.options[this.selectedIndex].value){
+							case 'c':
+								document.getElementById('code').value = '#include<stdio.h>\nint main()\n{\n\n\treturn 0;\n}'
+								break;
+							case 'c++':
+								document.getElementById('code').value = '#include<iostream>\nusing namespace std;\nint main() \n{\n\n}';
+								break;
+							case 'java':
+								document.getElementById('code').value = 'public class Test {\n\tpublic static void main(String[] args) {\n\n\t}\n}'
+								break;
+						}
 					}
 					script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js')
 				p
