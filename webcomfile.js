@@ -33,16 +33,29 @@ app.get('/form',function(req,res){
 
 app.post('/form_receive',function(req,res) {
 	//var title = req.body.title;
-	//var language = req.body.language;
+	var language = req.body.language;
 	var code = req.body.code;
-	console.log('넘어온 코드 : '+code);
 	var source = code.split(/\r\n|\r\n/).join("\n");
-	var file='test.c';
-	
-	fs.writeFile(file,source,'utf8',function(error) {
-		console.log('write end');
+	var file;
+	var compile;
+
+	if(language == 'c'){
+		file = 'test.c';
+		compile = spawn('gcc',[file]);
+	}	
+	else if(language=='c++'){
+		file = 'test.cpp';
+		compile = spawn('g++',[file]);
+	}
+	else if(language=='java'){
+		file = 'test.java';
+		compile = spawn('javac',[file]);
+	}
+
+	fs.writeFile(file,source,'utf-8',function(error) {
+		console.log('소스파일 작성 완료.');
 	});
-	var compile = spawn('gcc',[file]);
+	
 	compile.stdout.on('data',function(data) {
 		console.log('stdout: '+data);
 	});
@@ -54,7 +67,7 @@ app.post('/form_receive',function(req,res) {
 			var run = spawn('./a.out',[]);	
 			run.stdout.on('data',function(output){
 				console.log('컴파일 완료');
-				var responseData = {'result':'ok','output': output.toString('utf8')};
+				var responseData = {'result':'ok','output': output.toString('utf8'),'language':language};
 				res.json(responseData);
 			});
 			run.stderr.on('data', function (output) {
@@ -64,7 +77,7 @@ app.post('/form_receive',function(req,res) {
 				console.log('stdout: ' + output);
 			});
 			models.Code.create( {
-				title: 'test1',
+				title: 'test',
 				code: source 
 			})
 			.catch(err => {

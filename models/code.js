@@ -1,7 +1,7 @@
 module.exports = function (sequelize, DataTypes) {
   const code = sequelize.define('Code', {
 	  title: {
-		  field: 'title', type: DataTypes.STRING(10), unique: false, allowNull: false },
+		  field: 'title', type: DataTypes.STRING(10), allowNull: false },
 	  code: {
 		  field: 'code', type: DataTypes.STRING(100), allowNull: false },
   }, {

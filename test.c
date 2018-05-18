@@ -1,8 +1,6 @@
-#include<stdio.h>
+#include<iostream>
 int main()
 {
-	for(int i=0; i<10; i++) {
-	printf("%d\n",i);
-	}
+	std::cout << "123";
 	return 0;
 }

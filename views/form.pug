@@ -37,9 +37,9 @@ html(lang='en')
 			.jumbotron
 				h1 문제
 				select#language(name='language') 
-					option(name='1') C
-					option(name='2') C++
-					option(name='3') Java
+					option(value='c') C
+					option(value='c++') C++
+					option(value='java') Java
 				h4 show me the money 
 				p.lead
 				textarea#code(style='resize:none; width:400px; height:300px;' name='code' onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}") #include<stdio.h>&#10;int main()&#10;{&#10;&#10;	return 0;&#10;}
@@ -53,17 +53,17 @@ html(lang='en')
 						sendAjax('http://localhost:3000/form_receive',code.value,language.value);
 					})	
 					function sendAjax(url,data,language){
-						var data = {'code': data};
+						var data = {'code': data ,'language': language};
 						data = JSON.stringify(data);
 						var xhr = new XMLHttpRequest();
 						xhr.open('POST',url,true);
-						xhr.setRequestHeader('Content-type','application/json');	
+						xhr.setRequestHeader('Content-type','application/json');
 						xhr.send(data);
 
-						xhr.addEventListener('load',function() {
-							var result = JSON.parse(xhr.responseText);
-							if(result.result !='ok')return;
-							document.getElementById('output').value=result.output;
+					xhr.addEventListener('load',function() {
+						var result = JSON.parse(xhr.responseText);
+						if(result.result !='ok')return;
+						document.getElementById('output').value=result.output;
 						});
 					}
 					script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js')
