@@ -3,8 +3,10 @@ const sequelize = require('sequelize');
 const parse = require('parse-json');
 const app = express();
 const fs = require('fs');
+const PDK = require('node-pinterest');
 const spawn = require('child_process').spawn;
 const bodyParser = require('body-parser');
+var weather = require('weather-js');
 app.set('view engine','pug');
 app.set('views','./views');
 app.use(bodyParser.urlencoded({extended: false}));
@@ -14,7 +16,7 @@ app.use(express.static(__dirname + '/public'));
 // connect To DB
 const models = require('./models');
 
-var c;
+
 models.sequelize.sync()
   .then(() => {
     console.log('✓ DB connection success.');
@@ -26,10 +28,28 @@ models.sequelize.sync()
     process.exit();
   });
 
-
-app.get('/form',function(req,res){
-	res.render("form");
+app.get('/',function(req,res){
+	res.send('connect');
 });
+app.get('/form',function(req,res){
+	var location;
+	var temperature;
+	weather.find({search: 'Seoul',degreeType: 'C'}, function(err,result){
+	if(err)
+		console.log(err)
+	else{
+		location = result[0].location.name;
+		temperature = result[0].current.temperature;
+		res.render("form",{data: JSON.stringify(result)});
+	}
+	});
+});
+app.get('/login',function(req,res){
+	res.render('login');
+});
+app.get('/mypage',function(req,res) {
+	res.render('mypage');
+})
 
 app.post('/form_receive',function(req,res) {
 	//var title = req.body.title;
@@ -38,17 +58,18 @@ app.post('/form_receive',function(req,res) {
 	var source = code.split(/\r\n|\r\n/).join("\n");
 	var file;
 	var compile;
-
+	var source_path = '../server_side_javascript/sources/';
+	
 	if(language == 'c'){
-		file = 'test.c';
+		file = source_path+'test.c';
 		compile = spawn('gcc',[file]);
 	}	
 	else if(language=='c++'){
-		file = 'test.cpp';
+		file = source_path+'test.cpp';
 		compile = spawn('g++',[file]);
 	}
 	else if(language=='java'){
-		file = 'test.java';
+		file = source_path+'Test.java';
 		compile = spawn('javac',[file]);
 	}
 
@@ -64,7 +85,12 @@ app.post('/form_receive',function(req,res) {
 	});
 	compile.on('close',function(data){
 		if(data ==0) {
-			var run = spawn('./a.out',[]);	
+			var run;
+			if(language == 'java'){
+				run = spawn('java',['Test']);
+			} else {
+				run = spawn('./a.out',[]);
+			}
 			run.stdout.on('data',function(output){
 				console.log('컴파일 완료');
 				var responseData = {'result':'ok','output': output.toString('utf8'),'language':language};

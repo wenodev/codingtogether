@@ -1,0 +1,22 @@
+doctype html
+html(lang='en')
+	head
+		mypage
+	body
+		script.
+			window.pAsyncInit = function() {
+			PDK.init({
+			appId: "4968337540873465710", // Change this
+			cookie: true
+			});
+			};
+			(function(d, s, id){
+			var js, pjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id)) {return;}
+			js = d.createElement(s); js.id = id;
+			js.src = "//assets.pinterest.com/sdk/sdk.js";
+			pjs.parentNode.insertBefore(js, pjs);
+			}(document, 'script', 'pinterest-jssdk'));
+			var param = {
+				fields: 'id,note,link,image'
+			};

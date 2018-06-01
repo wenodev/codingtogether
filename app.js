@@ -1,14 +1,33 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
+var multer = require('multer');
+var _storage = multer.diskStorage({
+	destination: function(req,file,cb) {
+		cb(null,'uploads/')
+	},
+	filename: function(req,file,cb) {
+		cb(null,file.originalname)
+	}
+})
+var upload = multer({storage: _storage}) //미들웨어 리턴. 사용자가 업로드한 파일을 어디에 저장할 것인지 설정
 app.locals.pretty = true;
 app.set('view engine','pug');
 app.set('views','./views');
 app.use(express.static('public'));	//public이라는 디렉토리를 정적인 파일이 위치하는 디렉토리로 하겠다.
+app.use('/user',express.static('uploads'));
 app.use(bodyParser.urlencoded({extended: false }))
 app.get('/form',function(req,res){
 	res.render('form');
 });
+app.get('/upload',function(req,res){	//두번째 인자(미들웨어)가 function 보다 먼저 실행되고, 사용자가 post한 데이터 중에 파일이 포함되어 있다면 그 파일을 가공해서 req 객체 안에...
+	res.render('upload');
+});
+app.post('/upload',upload.single('userfile'),function(req,res){
+	res.send('uploaded :'+req.file.originalname);
+	console.log(req.file);
+	
+})
 app.get('/form_receiver',function(req,res) {
 	var title = req.query.title;
 	var description = req.query.description;

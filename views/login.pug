@@ -1,20 +1,83 @@
-doctype html
-html(lang='en')
-	head
-		meta(charset='utf-8')
-		meta(http-equiv='X-UA-Compatible', content='IE=edge')
-		meta(name='viewport', content='width=device-width, initial-scale=1')
-		meta(name='description', content='')
-		meta(name='author', content='')
-		link(rel='icon', href='../../favicon.ico')
-		link(href='css/bootstrap.min.css', rel='stylesheet')
-		link(href='css/jumbotron.css', rel='stylesheet')
-		script(src='../../assets/js/ie8-responsive-file-warning.js')
-		script(src='../../assets/js/ie-emulation-modes-warning.js')
-		script(src='https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js')
-		script(src='https://oss.maxcdn.com/respond/1.4.2/respond.min.js')
-	body
-		login
+link#bootstrap-css(href='//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css', rel='stylesheet')
+script(src='//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js')
+script(src='//code.jquery.com/jquery-1.11.1.min.js')
+// ---- Include the above in your HEAD tag --------
+.container
+  #loginbox.mainbox.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2(style='margin-top:50px;')
+    .panel.panel-info
+      .panel-heading
+        .panel-title Sign In
+        div(style='float:right; font-size: 80%; position: relative; top:-10px')
+          a(href='#') Forgot password?
+      .panel-body(style='padding-top:30px')
+        #login-alert.alert.alert-danger.col-sm-12(style='display:none')
+        form#loginform.form-horizontal(role='form')
+          .input-group(style='margin-bottom: 25px')
+            span.input-group-addon
+              i.glyphicon.glyphicon-user
+            input#login-username.form-control(type='text', name='username', value='', placeholder='username or email')
+          .input-group(style='margin-bottom: 25px')
+            span.input-group-addon
+              i.glyphicon.glyphicon-lock
+            input#login-password.form-control(type='password', name='password', placeholder='password')
+          .input-group
+            .checkbox
+              label
+                input#login-remember(type='checkbox', name='remember', value='1')
+                |  Remember me
+          .form-group(style='margin-top:10px')
+            // Button
+            .col-sm-12.controls
+              a#btn-login.btn.btn-success(href='#') Login  
+              a#btn-fblogin.btn.btn-primary(href='#') Login with Facebook
+          .form-group
+            .col-md-12.control
+              div(style='border-top: 1px solid#888; padding-top:15px; font-size:85%')
+                | Don't have an account! 
+                a(href='#', onclick="$('#loginbox').hide(); $('#signupbox').show()")
+                  | Sign Up Here
+  #signupbox.mainbox.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2(style='display:none; margin-top:50px')
+    .panel.panel-info
+      .panel-heading
+        .panel-title Sign Up
+        div(style='float:right; font-size: 85%; position: relative; top:-10px')
+          a#signinlink(href='#', onclick="$('#signupbox').hide(); $('#loginbox').show()") Sign In
+      .panel-body
+        form#signupform.form-horizontal(role='form')
+          #signupalert.alert.alert-danger(style='display:none')
+            p Error:
+            span
+          .form-group
+            label.col-md-3.control-label(for='email') Email
+            .col-md-9
+              input.form-control(type='text', name='email', placeholder='Email Address')
+          .form-group
+            label.col-md-3.control-label(for='firstname') First Name
+            .col-md-9
+              input.form-control(type='text', name='firstname', placeholder='First Name')
+          .form-group
+            label.col-md-3.control-label(for='lastname') Last Name
+            .col-md-9
+              input.form-control(type='text', name='lastname', placeholder='Last Name')
+          .form-group
+            label.col-md-3.control-label(for='password') Password
+            .col-md-9
+              input.form-control(type='password', name='passwd', placeholder='Password')
+          .form-group
+            label.col-md-3.control-label(for='icode') Invitation Code
+            .col-md-9
+              input.form-control(type='text', name='icode', placeholder='')
+          .form-group
+            // Button
+            .col-md-offset-3.col-md-9
+              button#btn-signup.btn.btn-info(type='button')
+                i.icon-hand-right
+                |  &nbsp Sign Up
+              span(style='margin-left:8px;') or
+          .form-group(style='border-top: 1px solid #999; padding-top:20px')
+            .col-md-offset-3.col-md-9
+              button#btn-fbsignup.btn.btn-primary(type='button')
+                i.icon-facebook
+                |    Sign Up with Facebook
 			
-			script(src='../../assets/js/ie10-viewport-bug-workaround.js')
 
