@@ -1,0 +1,20 @@
+doctype html
+html
+	head
+		meta(charset='utf-8')
+		p#image
+	body
+		script.
+			var image = !{data};
+			//alert(image.data[0].images['237x'].url);
+			imageShow(image.data[0].images['237x'].url,300,300,'image');
+
+			function imageShow(src,width,height,alt) {
+				var position = document.getElementById('image');
+				var img= document.createElement('img');
+				img.src = src;
+				img.width = width;
+				img.height = height;
+				img.alt = alt;
+				position.insertBefore(img,position.childNodes[0]);
+			}
