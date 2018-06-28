@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<!-- <html lang="en"> -->
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags-->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+    <!-- <title>코딩봇 프로젝트</title><img src="drib_blink_bot.gif" width="200" height="200" align="right">
+    <p id="weather">		//날씨 아이콘(weather은 모두 날씨정보 관련</p> -->
+    <!-- Bootstrap core CSS-->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template-->
+    <link href="css/jumbotron.css" rel="stylesheet">
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines!-->
+    <!--if lt IE 9-->
+    <script src="../../assets/js/ie8-responsive-file-warning.js"></script>
+    <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
+
+    <style>
+      body{
+        margin:0;
+      }
+      #active {
+        color:red;
+      }
+      .saw {
+        color:gray;
+      }
+      a {
+        color:black;
+        text-decoration: none;
+      }
+      h1 {
+        font-size:45px;
+        text-align: center;
+        border-bottom:1px solid gray;
+        margin:0;
+        padding:20px;
+      }
+      ol{
+        border-right:1px solid gray;
+        width:100px;
+        margin:0;
+        padding:20px;
+      }
+    </style>
+  </head>
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries-->
+  <!--if lt IE 9
+  script(src='https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js')
+  script(src='https://oss.maxcdn.com/respond/1.4.2/respond.min.js')
+  -->
+  <body></body>
+  <div class="container">
+    <div class="header">
+      <h1>CodingTogether</h1>
+
+      <h3 class="text-muted">코딩봇</h3>
+      <div class="jumbotron">
+
+        <select id="language" name="language" onchange="selectedLanguage.call(this,event)">
+          <option value="c">C</option>
+          <option value="c++">C++</option>
+          <option value="java">Java</option>
+        </select>
+        <h4>show me the money </h4>
+        <p class="lead"></p>
+        <textarea id="code" style="resize:none; width:400px; height:300px;" name="code" onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'	'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}">#include<stdio.h>&#10;int main()&#10;{&#10;&#10;	return 0;&#10;}</textarea>
+        <p></p>
+        <input id="output" type="text" name="output" style="resize:none; width:400px; height:50px;" readonly="readonly">
+        <p></p>
+        <input id="ajax_post" type="button" value="제출하기" class="ajaxsend">
+        <p></p>
+        <script>
+          var weather = ;
+          imageShow(weather[1].current.imageUrl,100,100,'weather');
+          document.querySelector('.ajaxsend').addEventListener('click',function(){
+          	var port = 'http://172.30.1.53:3000/form_receive';
+          	sendAjax('http://localhost:3000/form_receive',code.value,language.value);
+          })
+          function sendAjax(url,data,language){
+          	var data = {'code': data ,'language': language};
+          	data = JSON.stringify(data);
+          	var xhr = new XMLHttpRequest();
+          	xhr.open('POST',url,true);
+          	xhr.setRequestHeader('Content-type','application/json');
+          	xhr.send(data);
+          xhr.addEventListener('load',function() {
+          	var result = JSON.parse(xhr.responseText);
+          	if(result.result !='ok')return;
+          	document.getElementById('output').value=result.output;
+          	});
+          }
+          function imageShow(src,width,height,alt) {
+          	var position = document.getElementById('weather');
+          	var img= document.createElement('img');
+          	img.src = src;
+          	img.width = width;
+          	img.height = height;
+          	img.alt = alt;
+          	position.insertBefore(img,position.childNodes[0]);
+          }
+          function selectedLanguage(event){
+          	switch(this.options[this.selectedIndex].value){
+          		case 'c':
+          			document.getElementById('code').value = '#include<stdio.h>\nint main()\n{\n\n\treturn 0;\n}'
+          			break;
+          		case 'c++':
+          			document.getElementById('code').value = '#include<iostream>\nusing namespace std;\nint main() \n{\n\n}';
+          			break;
+          		case 'java':
+          			document.getElementById('code').value = 'public class Test {\n\tpublic static void main(String[] args) {\n\n\t}\n}'
+          			break;
+          	}
+          }
+          script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js')
+        </script>
+        <p></p>
+        <footer class="footer"></footer>
+        <p>© SkunivTeam</p>
+      </div>
+      <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+    </div>
+  </div>
+</html>
