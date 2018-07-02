@@ -1,6 +1,10 @@
 #include<iostream>
 using namespace std;
+class Sum {
+public:
+	Sum(int x, int y) { cout << x+y << endl; }
+};
 int main() 
 {
-	cout << "c++ test";
+	Sum(3,7);
 }

@@ -46,7 +46,6 @@ app.post('/upload',upload.single('userfile'),function(req,res){
 	var pinterest = PDK.init('AReOr2zot2VzjaCcok1amxZxLZDAFTHTFGxcXIBE9FpR1MA0sQAAAAA');
 	pinterest.api('me').then(console.log);
 	var filename = 'localhost:3000/user/'+req.file.originalname;
-	console.log(filename)
 	pinterest.api('me/boards').then(function(json) {
     pinterest.api('pins', {
         method: 'POST',
@@ -83,13 +82,18 @@ app.get('/form',function(req,res){
 		res.render("form",{data: JSON.stringify(result)});
 	});
 });
-app.get('/login',function(req,res){
-	res.render('login');
-});
 app.get('/mypage',function(req,res) {
 	res.render('mypage');
 })
-
+app.get('/login',function(req,res){
+	res.render('login');
+});
+app.post('/login_receive',function(req,res){
+	var id = req.body.login_id;
+	var pwd = req.body.login_password;
+	var responseData = {'result':'ok'};
+	res.json(responseData);
+})
 app.post('/form_receive',function(req,res) {
 	//var title = req.body.title;
 	var language = req.body.language;
