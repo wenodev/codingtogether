@@ -50,8 +50,12 @@ script(src='//code.jquery.com/jquery-1.11.1.min.js')
 		
 		xhr.addEventListener('load',function() {
 			var result = JSON.parse(xhr.responseText);
-			if(result.result != 'ok')return;
-			alert('login function')
+			if(result.result != 'ok'){
+				alert('정보가 일치하지 않습니다.')
+				return;
+			} else {
+				location.href="http://localhost:3000/form";
+			}
 			});
 		}
 	#signupbox.mainbox.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2(style='display:none; margin-top:50px')

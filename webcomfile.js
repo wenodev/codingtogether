@@ -91,8 +91,21 @@ app.get('/login',function(req,res){
 app.post('/login_receive',function(req,res){
 	var id = req.body.login_id;
 	var pwd = req.body.login_password;
-	var responseData = {'result':'ok'};
-	res.json(responseData);
+	models.User.findOne({
+		where: { user_id: id}
+	})
+	.then((user)=> {
+		if(user==null || user.dataValues['password']!=pwd) {
+			var responseData = {'result' : 'no'}
+			res.json(responseData);
+			console.log('로그인 실패')
+		}
+		else{
+			var responseData = {'result' : 'ok'}
+			res.json(responseData);
+			console.log('로그인 성공')
+		}
+	})
 })
 app.post('/form_receive',function(req,res) {
 	//var title = req.body.title;
