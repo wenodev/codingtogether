@@ -6,8 +6,9 @@ html
 	body
 		script.
 			var image = !{data};
-			//alert(image.data[0].images['237x'].url);
-			imageShow(image.data[0].images['237x'].url,300,300,'image');
+			var count = image.data.length;
+			for(var i=0; i < count; i++)
+				imageShow(image.data[i].images['237x'].url,300,300,'image');
 
 			function imageShow(src,width,height,alt) {
 				var position = document.getElementById('image');

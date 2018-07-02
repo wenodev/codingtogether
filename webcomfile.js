@@ -69,6 +69,7 @@ app.get('/image',function(req,res){
 		var url = pins.data[0].images['237x'].url;
 		res.render("image",{data: JSON.stringify(pins)});
 	});
+
 });
 
 app.get('/vue',function(req,res){
