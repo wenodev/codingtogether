@@ -29,6 +29,25 @@ app.use('/user',express.static('uploads'));
 const models = require('./models');
 //로그인 여부
 var login_flag = false;
+//회원 Singleton
+var SingletonClass = (function() {
+	var mId,mPwd,instance;
+	function SingletonClass() { }
+	//setter
+	this.__defineSetter__("mId",function(val){this.mId = val;});
+	this.__defineSetter__("mPwd",function(val){this.mPwd = val;});
+	this.__defineGetter__("mId",function(){return mId;});
+	this.__defineGetter__("mPwd",function(){return mPwd;});
+	return {
+		getInstance: function() {
+			if(instance == undefined){
+			instance = new SingletonClass();
+			instance.constructor = null;
+			}
+			return instance;
+		}
+	};
+})();
 
 models.sequelize.sync()
   .then(() => {
@@ -80,36 +99,28 @@ app.get('/form',function(req,res){
 		console.log(err)
 	else
 		res.render("form",{data: JSON.stringify(result) ,login: login_flag});
-		console.log(login_flag)
 	});
 });
 app.get('/mypage',function(req,res) {
-	res.render('mypage');
+	if(login_flag) 
+		res.render('mypage');
+	else{
+		res.send("<script>alert('로그인이 필요합니다.')</script><meta http-equiv='refresh' content='0; url=http://localhost:3000/form'</meta>")
+	}
 })
 app.get('/login',function(req,res){
 	res.render('login');
 });
+app.get('/logout',function(req,res){
+	var m = SingletonClass.getInstance();
+	login_flag = false;
+	m = {};
+	res.redirect('back');
+})
 app.post('/login_receive',function(req,res){
 	var id = req.body.login_id;
 	var pwd = req.body.login_password;
 	var member;
-	//회원 Singleton
-	var SingletonClass = (function() {
-		var mId,mPwd,instance;
-		function SingletonClass() {
-			this.mId = id;
-			this.mPwd = pwd;
-		}
-		return {
-			getInstance: function() {
-				if(instance == undefined){
-					instance = new SingletonClass();
-					instance.constructor = null;
-				}
-				return instance;
-			}
-		};
-	})();
 	//DB에서 회원정보 검색
 	models.User.findOne({
 		where: { user_id: id}
@@ -126,6 +137,9 @@ app.post('/login_receive',function(req,res){
 			var responseData = {'result' : 'ok', 'flag':login_flag}
 			res.json(responseData);
 			member = SingletonClass.getInstance();
+			//로그인 성공시 Singleton 객체에 id,pwd값 setting
+			member.mId = id;
+			member.mPwd = pwd;
 			console.log('로그인 성공')
 		}
 	})
