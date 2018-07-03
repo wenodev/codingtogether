@@ -27,6 +27,8 @@ app.use(express.static(__dirname + '/public'));
 app.use('/user',express.static('uploads'));
 // connect To DB
 const models = require('./models');
+//로그인 여부
+var login_flag = false;
 
 models.sequelize.sync()
   .then(() => {
@@ -68,9 +70,7 @@ app.get('/image',function(req,res){
 		var url = pins.data[0].images['237x'].url;
 		res.render("image",{data: JSON.stringify(pins)});
 	});
-
 });
-
 app.get('/vue',function(req,res){
 	res.render('vue');
 })
@@ -79,7 +79,8 @@ app.get('/form',function(req,res){
 	if(err)
 		console.log(err)
 	else
-		res.render("form",{data: JSON.stringify(result)});
+		res.render("form",{data: JSON.stringify(result) ,login: login_flag});
+		console.log(login_flag)
 	});
 });
 app.get('/mypage',function(req,res) {
@@ -91,18 +92,40 @@ app.get('/login',function(req,res){
 app.post('/login_receive',function(req,res){
 	var id = req.body.login_id;
 	var pwd = req.body.login_password;
+	var member;
+	//회원 Singleton
+	var SingletonClass = (function() {
+		var mId,mPwd,instance;
+		function SingletonClass() {
+			this.mId = id;
+			this.mPwd = pwd;
+		}
+		return {
+			getInstance: function() {
+				if(instance == undefined){
+					instance = new SingletonClass();
+					instance.constructor = null;
+				}
+				return instance;
+			}
+		};
+	})();
+	//DB에서 회원정보 검색
 	models.User.findOne({
 		where: { user_id: id}
 	})
 	.then((user)=> {
 		if(user==null || user.dataValues['password']!=pwd) {
-			var responseData = {'result' : 'no'}
+			login_flag = false;
+			var responseData = {'result' : 'no', 'flag' : login_flag}
 			res.json(responseData);
 			console.log('로그인 실패')
 		}
 		else{
-			var responseData = {'result' : 'ok'}
+			login_flag = true;
+			var responseData = {'result' : 'ok', 'flag':login_flag}
 			res.json(responseData);
+			member = SingletonClass.getInstance();
 			console.log('로그인 성공')
 		}
 	})

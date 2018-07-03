@@ -34,7 +34,9 @@ html(lang='en')
 					li.active(role='presentation')
 						a(href='') Home
 					li(role='presentation')
-						a(href='login') 로그인
+						a#login(href='login') 로그인
+					li#logout(role='presentation')
+						a(href='logout') 로그아웃
 					li(role='presentation')
 						a(href='mypage') 마이페이지
 			h3.text-muted 코딩봇
@@ -53,12 +55,24 @@ html(lang='en')
 				input#ajax_post(type = 'button' value='제출하기' class='ajaxsend')
 				p
 				script.
+					var f = {login};
+					$(document).ready(function(){
+						if(f==true){
+							$("#login").hide()
+							$("#logout").show()
+						}
+						else{
+							$("#logout").hide()
+							$("#login").show()
+						}
+					});
 					var weather = !{data};
 					imageShow(weather[1].current.imageUrl,100,100,'weather');
 					document.querySelector('.ajaxsend').addEventListener('click',function(){
 						var port = 'http://172.30.1.53:3000/form_receive';
 						sendAjax('http://localhost:3000/form_receive',code.value,language.value);
 					})
+					
 					function sendAjax(url,data,language){
 						var data = {'code': data ,'language': language};
 						data = JSON.stringify(data);
@@ -70,7 +84,7 @@ html(lang='en')
 					xhr.addEventListener('load',function() {
 						var result = JSON.parse(xhr.responseText);
 						if(result.result !='ok')return;
-						document.getElementById('output').value=result.output;
+							document.getElementById('output').value=result.output;
 						});
 					}
 					function imageShow(src,width,height,alt) {
