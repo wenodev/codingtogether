@@ -67,6 +67,7 @@ app.post('/upload',upload.single('userfile'),function(req,res){
 app.get('/image',function(req,res){
 	var pinterest = pinterestAPI('godparty');
 	pinterest.getPinsFromBoard('project', true, function (pins) {
+		console.log(pins.data[0].images);
 		var url = pins.data[0].images['237x'].url;
 		res.render("image",{data: JSON.stringify(pins)});
 	});
@@ -86,7 +87,7 @@ app.get('/mypage',function(req,res) {
 	if(member.mIsLogin) 
 		res.render('mypage');
 	else{
-		res.send("<script>alert('로그인이 필요합니다.')</script><meta http-equiv='refresh' content='0; url=http://localhost:3000/form'</meta>")
+		res.send("<script>alert('로그인이 필요합니다.')</script><meta http-equiv='refresh' content='0; url=http://localhost:3000/form'</meta>");
 	}
 });
 app.get('/login',function(req,res){
@@ -105,10 +106,10 @@ app.post('/login_receive',function(req,res){
 		where: { user_id: id}
 	})
 	.then((user)=> {
-		if(user==null || user.dataValues['password']!=pwd) {
+		if(user==null || user.dataValues.password!=pwd) {
 			var responseData = {'result' : 'no', 'flag' : member.mIsLogin};
 			res.json(responseData);
-			console.log('로그인 실패')
+			console.log('로그인 실패');
 		}
 		else{
 			//로그인 성공시 Singleton 객체에 id,pwd값 setting
@@ -142,6 +143,10 @@ app.post('/form_receive',function(req,res) {
 		file = source_path+'Test.java';
 		compile = spawn('javac',[file]);
 	}
+	else if(language=='python') {
+		file = source_path+'test.py';
+		compile = spawn('python3',[file]);
+	}
 
 	fs.writeFile(file,source,'utf-8',function(error) {
 		console.log('소스파일 작성 완료.');
@@ -158,7 +163,11 @@ app.post('/form_receive',function(req,res) {
 			var run;
 			if(language == 'java'){
 				run = spawn('java',['Test']);
-			} else {
+			} 
+			else if(language == 'python') {
+				run = spawn('python3',['test.py']);
+			}
+			else {
 				run = spawn('./a.out',[]);
 			}
 			run.stdout.on('data',function(output){
@@ -180,7 +189,7 @@ app.post('/form_receive',function(req,res) {
 				console.error(err);
 			});
 		}
-	});
+		});
 });
 
 app.listen(3000,function() {

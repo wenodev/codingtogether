@@ -46,6 +46,7 @@ html(lang='en')
 					option(value='c') C
 					option(value='c++') C++
 					option(value='java') Java
+					option(value='python') Python
 				h4 show me the money 
 				p.lead
 				textarea#code(style='resize:none; width:400px; height:300px;' name='code' onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}") #include<stdio.h>&#10;int main()&#10;{&#10;&#10;	return 0;&#10;}
@@ -106,6 +107,9 @@ html(lang='en')
 								break;
 							case 'java':
 								document.getElementById('code').value = 'public class Test {\n\tpublic static void main(String[] args) {\n\n\t}\n}'
+								break;
+							case 'python':
+								document.getElementById('code').value = '';
 								break;
 						}
 					}
