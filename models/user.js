@@ -4,8 +4,9 @@ module.exports = function (sequelize, DataTypes) {
 		  field: 'user_id', type: DataTypes.STRING(50), unique: true, allowNull: false
 	  },
 	  password: {
-		  field: 'password', type: DataTypes.STRING(30), allowNull: false },
-  }, {
+		  field: 'password', type: DataTypes.STRING(30), allowNull:false
+	  },
+  	}, {
     // don't use camelcase for automatically added attributes but underscore style
     // so updatedAt will be updated_at
     underscored: true,

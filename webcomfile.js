@@ -1,22 +1,22 @@
-const express = require('express');
-const sequelize = require('sequelize');
-const parse = require('parse-json');
-const app = express();
-const fs = require('fs');
+var express = require('express');
+var sequelize = require('sequelize');
+var parse = require('parse-json');
+var app = express();
+var fs = require('fs');
 var PDK = require('node-pinterest');
 var pinterestAPI = require('pinterest-api');
 var multer = require('multer');
 var _storage = multer.diskStorage({
     destination: function(req,file,cb) {
-        cb(null,'uploads/')
+        cb(null,'uploads/');
     },
     filename: function(req,file,cb) {
-        cb(null,file.originalname)
+        cb(null,file.originalname);
     }
-})
-var upload = multer({storage: _storage})
-const spawn = require('child_process').spawn;
-const bodyParser = require('body-parser');
+});
+var upload = multer({storage: _storage});
+var spawn = require('child_process').spawn;
+var bodyParser = require('body-parser');
 var weather = require('weather-js');
 app.set('view engine','pug');
 app.set('views','./views');
@@ -25,33 +25,14 @@ app.use(bodyParser.json());
 //bootstrap
 app.use(express.static(__dirname + '/public'));
 app.use('/user',express.static('uploads'));
+//singleton
+var member = require('./singleton');
+member.mIsLogin = false;
 // connect To DB
-const models = require('./models');
-//로그인 여부
-var login_flag = false;
-//회원 Singleton
-var SingletonClass = (function() {
-	var mId,mPwd,instance;
-	function SingletonClass() { }
-	//setter
-	this.__defineSetter__("mId",function(val){this.mId = val;});
-	this.__defineSetter__("mPwd",function(val){this.mPwd = val;});
-	this.__defineGetter__("mId",function(){return mId;});
-	this.__defineGetter__("mPwd",function(){return mPwd;});
-	return {
-		getInstance: function() {
-			if(instance == undefined){
-			instance = new SingletonClass();
-			instance.constructor = null;
-			}
-			return instance;
-		}
-	};
-})();
-
+var models = require('./models');
 models.sequelize.sync()
   .then(() => {
-    console.log('✓ DB connection success.');
+	console.log('✓ DB connection success.');
     console.log('  Press CTRL-C to stop\n');
   })
   .catch(err => {
@@ -61,7 +42,7 @@ models.sequelize.sync()
   });
 
 app.get('/upload',function(req,res){
-	res.render('upload')
+	res.render('upload');
 });
 app.post('/upload',upload.single('userfile'),function(req,res){
 	var pinterest = PDK.init('AReOr2zot2VzjaCcok1amxZxLZDAFTHTFGxcXIBE9FpR1MA0sQAAAAA');
@@ -77,7 +58,7 @@ app.post('/upload',upload.single('userfile'),function(req,res){
 			image_url: 'http://farm2.staticflickr.com/1763/42317153534_aaf71c5a3c_z.jpg'
         }
 	}).then(function(json) {
-		console.log(json)
+		console.log(json);
         pinterest.api('me/pins').then(console.log);
 		});
 	});
@@ -92,58 +73,54 @@ app.get('/image',function(req,res){
 });
 app.get('/vue',function(req,res){
 	res.render('vue');
-})
+});
 app.get('/form',function(req,res){
 	weather.find({search: 'Seoul',degreeType: 'C'}, function(err,result){
 	if(err)
-		console.log(err)
+		console.log(err);
 	else
-		res.render("form",{data: JSON.stringify(result) ,login: login_flag});
+		res.render("form",{data: JSON.stringify(result) ,login: member.mIsLogin});
 	});
 });
 app.get('/mypage',function(req,res) {
-	if(login_flag) 
+	if(member.mIsLogin) 
 		res.render('mypage');
 	else{
 		res.send("<script>alert('로그인이 필요합니다.')</script><meta http-equiv='refresh' content='0; url=http://localhost:3000/form'</meta>")
 	}
-})
+});
 app.get('/login',function(req,res){
 	res.render('login');
 });
 app.get('/logout',function(req,res){
-	var m = SingletonClass.getInstance();
-	login_flag = false;
-	m = {};
+	member = {};
+	member.mIsLogin = false;
 	res.redirect('back');
-})
+});
 app.post('/login_receive',function(req,res){
 	var id = req.body.login_id;
 	var pwd = req.body.login_password;
-	var member;
 	//DB에서 회원정보 검색
 	models.User.findOne({
 		where: { user_id: id}
 	})
 	.then((user)=> {
 		if(user==null || user.dataValues['password']!=pwd) {
-			login_flag = false;
-			var responseData = {'result' : 'no', 'flag' : login_flag}
+			var responseData = {'result' : 'no', 'flag' : member.mIsLogin};
 			res.json(responseData);
 			console.log('로그인 실패')
 		}
 		else{
-			login_flag = true;
-			var responseData = {'result' : 'ok', 'flag':login_flag}
-			res.json(responseData);
-			member = SingletonClass.getInstance();
 			//로그인 성공시 Singleton 객체에 id,pwd값 setting
+			member.mIsLogin = true;	
 			member.mId = id;
 			member.mPwd = pwd;
-			console.log('로그인 성공')
+			var responseData = {'result' : 'ok', 'flag':member.mIsLogin};
+			res.json(responseData);
+			console.log('로그인 성공');
 		}
-	})
-})
+	});
+});
 app.post('/form_receive',function(req,res) {
 	//var title = req.body.title;
 	var language = req.body.language;
@@ -209,3 +186,4 @@ app.post('/form_receive',function(req,res) {
 app.listen(3000,function() {
 	console.log('server connected');
 });
+
