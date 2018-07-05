@@ -28,14 +28,16 @@ app.use('/user',express.static('uploads'));
 //singleton
 var member = require('./singleton');
 member.mIsLogin = false;
+//comfile function
+var comp = require('./compiler');
 // connect To DB
 var models = require('./models');
 models.sequelize.sync()
-  .then(() => {
+  .then(function() {
 	console.log('✓ DB connection success.');
     console.log('  Press CTRL-C to stop\n');
   })
-  .catch(err => {
+  .catch(function(err) {
     console.error(err);
     console.log('✗ DB connection error. Please make sure DB is running.');
     process.exit();
@@ -101,13 +103,14 @@ app.get('/logout',function(req,res){
 app.post('/login_receive',function(req,res){
 	var id = req.body.login_id;
 	var pwd = req.body.login_password;
+	var responseData;
 	//DB에서 회원정보 검색
 	models.User.findOne({
 		where: { user_id: id}
 	})
-	.then((user)=> {
+	.then(function(user) {
 		if(user==null || user.dataValues.password!=pwd) {
-			var responseData = {'result' : 'no', 'flag' : member.mIsLogin};
+			responseData = {'result' : 'no', 'flag' : member.mIsLogin};
 			res.json(responseData);
 			console.log('로그인 실패');
 		}
@@ -116,7 +119,7 @@ app.post('/login_receive',function(req,res){
 			member.mIsLogin = true;	
 			member.mId = id;
 			member.mPwd = pwd;
-			var responseData = {'result' : 'ok', 'flag':member.mIsLogin};
+			responseData = {'result' : 'ok', 'flag':member.mIsLogin};
 			res.json(responseData);
 			console.log('로그인 성공');
 		}
@@ -127,69 +130,17 @@ app.post('/form_receive',function(req,res) {
 	var language = req.body.language;
 	var code = req.body.code;
 	var source = code.split(/\r\n|\r\n/).join("\n");
-	var file;
-	var compile;
-	var source_path = '../server_side_javascript/sources/';
+	var source_path = './sources/';	
+	//컴파일 메소드 호출
+	comp.compileFunction(language,source_path,source,res);
+	//작성 코드 DB에 저장
 	
-	if(language == 'c'){
-		file = source_path+'test.c';
-		compile = spawn('gcc',[file]);
-	}	
-	else if(language=='c++'){
-		file = source_path+'test.cpp';
-		compile = spawn('g++',[file]);
-	}
-	else if(language=='java'){
-		file = source_path+'Test.java';
-		compile = spawn('javac',[file]);
-	}
-	else if(language=='python') {
-		file = source_path+'test.py';
-		compile = spawn('python3',[file]);
-	}
-
-	fs.writeFile(file,source,'utf-8',function(error) {
-		console.log('소스파일 작성 완료.');
+	models.Code.create( {
+		title: 'test',
+		code: source 
+	}).catch(function(err) {
+		console.error(err);
 	});
-	
-	compile.stdout.on('data',function(data) {
-		console.log('stdout: '+data);
-	});
-	compile.stderr.on('data',function(data){
-		console.log(String(data));
-	});
-	compile.on('close',function(data){
-		if(data ==0) {
-			var run;
-			if(language == 'java'){
-				run = spawn('java',['Test']);
-			} 
-			else if(language == 'python') {
-				run = spawn('python3',['test.py']);
-			}
-			else {
-				run = spawn('./a.out',[]);
-			}
-			run.stdout.on('data',function(output){
-				console.log('컴파일 완료');
-				var responseData = {'result':'ok','output': output.toString('utf8'),'language':language};
-				res.json(responseData);
-			});
-			run.stderr.on('data', function (output) {
-				console.log(String(output));
-			});
-			run.on('close', function (output) {
-				console.log('stdout: ' + output);
-			});
-			models.Code.create( {
-				title: 'test',
-				code: source 
-			})
-			.catch(err => {
-				console.error(err);
-			});
-		}
-		});
 });
 
 app.listen(3000,function() {

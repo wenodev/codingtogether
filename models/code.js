@@ -1,9 +1,15 @@
 module.exports = function (sequelize, DataTypes) {
   const code = sequelize.define('Code', {
 	  title: {
-		  field: 'title', type: DataTypes.STRING(10), allowNull: false },
+		  field: 'title', 
+		  type: DataTypes.STRING(10), 
+		  allowNull: false 
+	  },
 	  code: {
-		  field: 'code', type: DataTypes.STRING(100), allowNull: false },
+		  field: 'code', 
+		  type: DataTypes.STRING(100), 
+		  allowNull: false 
+	  },
   }, {
     // don't use camelcase for automatically added attributes but underscore style
     // so updatedAt will be updated_at
