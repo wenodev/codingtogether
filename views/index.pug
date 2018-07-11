@@ -1,0 +1,89 @@
+doctype html
+head
+  meta(charset-='UTF-8')
+  meta(name='viewport', content='width = device-width', initial-scale='1')
+  title CodingTogether
+  link(rel='stylesheet', href='css/bootstrap.css')
+style(type='text/css').
+  .jumbotron{
+  background-image : url('../images/galaxy.jpg');
+  text-shadow : black 0.2em 0.2em 0.2em;
+  color : white
+  }
+nav.navbar.navbar-default
+  .container-fluid
+    .navbar-header
+      button.navbar-toggle(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1', aria-expanded='false')
+        span.sr-only
+        span.icon-bar
+        span.icon-bar
+        span.icon-bar
+      a.navbar-brand(href='#') CodingTogether
+    #bs-example-navbar-collpase-1.collapse.navbar-collapse
+      ul.nav.navbar-nav
+        li.active
+          a(href='#')
+            | About us 
+            span.sr-only
+        li
+          a(href='form') Practice 
+        li.active
+          a(href='#')
+            | Dictinoary 
+            span.sr-only
+        li
+          a(href='#')
+            | Community 
+            span.sr-only
+      ol.nav.nav-pills.pull-right
+        li.active(role='presentation')
+          a(href='#') Home
+        li(role='presentation')
+          a(href='#') &#xB85C;&#xADF8;&#xC778;
+        li(role='presentation')
+          a(href='#') &#xB9C8;&#xC774;&#xD398;&#xC774;&#xC9C0;
+.container
+  .jumbotron
+    h1.text-center  &#xCF54;&#xB529;&#xD22C;&#xAC8C;&#xB354;&#xB97C; &#xC18C;&#xAC1C;&#xD569;&#xB2C8;&#xB2E4;.
+    p.text-center
+      a.btn.btn-primary.btn-lg(href='form', role='button') 코딩하러 가기 
+.row
+  .col-sm-6.col-md-4
+    .thumbnail
+      // <img src="images/student1.jpg" alt="...">
+      .caption
+        h3 코딩교육 의무화
+        p
+          | 소프트웨어 개발자가 필요한 직종은 갈수록 많이지지만 관련 교육을 
+          | 이수한 학생은 줄어들기 때문에 소프트웨어 교육의 일차적인 목적인
+          | 소프트웨어 개발 능력을 갖춘 인재를 양성
+        p
+          a.btn.btn-primary(href='#', role='button') 자세히 알아보기 
+  .col-sm-6.col-md-4
+    .thumbnail
+      .caption
+        h3 어디서든 할 수 있는 코딩
+        p
+          | &#xCEF4;&#xD4E8;&#xD130;&#xB9CC; &#xC788;&#xC73C;&#xBA74; &#xC5B4;&#xB514;&#xC11C;&#xB4E0; &#xCF54;&#xB529;&#xACF5;&#xBD80;&#xB97C; &#xD63C;&#xC790; &#xD560; &#xC218; &#xC788;&#xC73C;&#xBA70;
+          | &#xBAA8;&#xB974;&#xB294; &#xAC83;&#xC740; &#xCC57;&#xBD07;&#xC744; &#xD1B5;&#xD574; &#xC2E4;&#xC2DC;&#xAC04;&#xC73C;&#xB85C; &#xBC30;&#xC6B8; &#xC218; &#xC788;&#xACE0;,
+          | &#xCF54;&#xB529;&#xBB38;&#xC81C; &#xD480;&#xC774;&#xB97C; &#xD1B5;&#xD574; &#xCEF4;&#xD4E8;&#xD305; &#xC0AC;&#xACE0;&#xB825;, &#xC54C;&#xACE0;&#xB9AC;&#xC998;, &#xBB38;&#xC81C; &#xD574;&#xACB0;, &#xCC3D;&#xC758;&#xB825; &#xB4F1;&#xC744; &#xD0A4;&#xC6B8; &#xC218; &#xC788;&#xB2E4;.
+        p
+          a.btn.btn-primary(href='#', role='button') &#xC790;&#xC138;&#xD788; &#xC54C;&#xC544;&#xBCF4;&#xAE30;
+  .col-sm-6.col-md-4
+    .thumbnail
+      .caption
+        h3 &#xC560;&#xAD6D;&#xAC00;
+        p
+          | &#xAD6D;&#xAC00;(&#x570B;&#x6B4C;)&#xB294; &#xD55C; &#xB098;&#xB77C;&#xB97C; &#xC0C1;&#xC9D5;&#xD558;&#xB294; &#xAD6D;&#xAC00;&#xC801; &#xCC28;&#xC6D0;&#xC758; &#xACF5;&#xC2DD;&#xC801;&#xC778; &#xB178;&#xB798;&#xC778; &#xB370; &#xBE44;&#xD558;&#xC5EC;,
+          | &#xC560;&#xAD6D;&#xAC00;&#xB294; &#xACF5;&#xC2DD;&middot;&#xBE44;&#xACF5;&#xC2DD; &#xC5EC;&#xBD80;&#xB97C; &#xB5A0;&#xB098; &#xB098;&#xB77C;&#xB97C; &#xC0AC;&#xB791;&#xD558;&#xB294; &#xB0B4;&#xC6A9;&#xC744; &#xB2F4;&#xC740; &#xB178;&#xB798;&#xB77C;&#xB294; &#xC810;&#xC5D0;&#xC11C; &#xC774; &#xB458;&#xC740; &#xAD6C;&#xBD84;&#xB41C;&#xB2E4;.
+          | &#xC560;&#xAD6D;&#xAC00;&#xB294; &#xC5EC;&#xB7EC; &#xAC00;&#xC9C0;&#xAC00; &#xC788;&#xB294;&#xB370;, &#xADF8; &#xC911; &#xAD6D;&#xAC00;&#xB85C; &#xC81C;&#xC815;&#xB41C; &#xC560;&#xAD6D;&#xAC00;&#xB294; &#xB098;&#xB77C;&#xB97C; &#xC0C1;&#xC9D5;&#xD558;&#xB294; &#xC758;&#xC2DD;&#xC74C;&#xC545;&#xC758; &#xAD6C;&#xC2E4;&#xC744; &#xD558;&#xAC8C; &#xB41C;&#xB2E4;.
+        p
+          a.btn.btn-primary(href='#', role='button') &#xC790;&#xC138;&#xD788; &#xC54C;&#xC544;&#xBCF4;&#xAE30;
+footer(style='background-color: #000000; color: #ffffff;')
+  .container
+    br
+    .row
+      .col-sm-4(style='text - align: center;')
+        h4 Copyright &copy; 2018 CodingTogether
+        h5 &#xC190;&#xC8FC;&#xC6D0; &#xC774;&#xC8FC;&#xD615; &#xC190;&#xC815;&#xD6C8; &#xCD5C;&#xCC2C;&#xC885;
+
