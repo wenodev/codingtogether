@@ -32,6 +32,8 @@ member.mIsLogin = false;
 var comp = require('./compiler');
 //chatbot function
 var chatbot = require('./chatBot');
+//enroll Validation function
+var validation = require('./enrollValidation');
 // connect To DB
 var models = require('./models');
 models.sequelize.sync()
@@ -69,6 +71,14 @@ app.get('/mypage',function(req,res) {
 });
 app.get('/login',function(req,res){
 	res.render('login');
+});
+app.get('/enroll',function(req,res){
+	res.render('enroll');
+});
+app.post('/enroll_receive',function(req,res){
+	//name,email,nickname,password,confirm
+	var info = req.body;
+	validation.enrollValidation(info,res);
 });
 app.get('/logout',function(req,res){
 	member = {};
