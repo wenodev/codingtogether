@@ -1,6 +1,6 @@
 #include<stdio.h>
 int main()
 {
-	printf("가나다라마바사아");
+	printf("제출하기");
 	return 0;
 }

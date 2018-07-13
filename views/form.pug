@@ -91,7 +91,7 @@ html(lang='en')
 					p
 					textarea#output(type='text' name='output' style='resize:none; width:400px; height:50px;' readonly='readonly')
 					p
-					input#ajax_post(type = 'button' value='제출하기' class='ajaxsend')
+					button#ajax_post(type = 'button' class='btn btn-primary' onclick='compileFunction()') 제출하기
 					p
 			.jumbotron.pull-right
 				br
@@ -102,7 +102,7 @@ html(lang='en')
 					p
 					textarea#chatUser(class='form-control' style='resize:none; width:340px; height:50;' name='chatUser')
 					p
-					input#chatPost(type='button' value='보내기' class='chatsend')
+					button#chatPost(type='button' class='btn btn-primary' onclick='chatFunction()') 보내기
 					
 				script.
 					var f = !{login};
@@ -117,22 +117,19 @@ html(lang='en')
 							$("#login").show()
 						}
 					});
-					var textarea = document.getElementById('chatBot');
-					textarea.scrollTop = textarea.scrollHeight;
-					document.querySelector('.ajaxsend').addEventListener('click',function(){
-						var port = 'http://172.30.1.53:3000/form_receive';
-						sendAjax('http://localhost:3000/form_receive',code.value,language.value);
-					})
 					document.getElementById('chatUser').addEventListener('keydown',function(event){
 						if(event.keyCode ==13){
 						event.preventDefault();
 							document.getElementById('chatPost').click();
 						}
 					});
-					document.querySelector('.chatsend').addEventListener('click',function(){
+					function compileFunction(){
+						sendAjax('http://localhost:3000/form_receive',code.value,language.value);
+					}
+					function chatFunction(){
 						document.getElementById('chatBot').value += '\n나 : '+document.getElementById('chatUser').value;
 						chatting('http://localhost:3000/form_chatting',chatUser.value);
-					})
+					}
 					function sendAjax(url,data,language){
 						var data = {'code': data ,'language': language};
 						data = JSON.stringify(data);

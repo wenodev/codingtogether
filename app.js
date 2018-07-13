@@ -30,6 +30,8 @@ var member = require('./singleton');
 member.mIsLogin = false;
 //comfile function
 var comp = require('./compiler');
+//chatbot function
+var chatbot = require('./chatBot');
 // connect To DB
 var models = require('./models');
 models.sequelize.sync()
@@ -116,15 +118,7 @@ app.post('/form_receive',function(req,res) {
 });
 app.post('/form_chatting',function(req,res){
 	var chat = req.body.chat;
-	var responseData;
-	if(chat.match(/if/)){
-		responseData = {'result':'ok','answer':'if문은 조건의 참/거짓 여부에 따라 달리 실행되는 분기분이란다!'};
-		res.json(responseData);
-	}
-	else{
-		responseData = {'result':'no','answer':'나도 잘 모르겠어..'};
-		res.json(responseData);
-	}
+	chatbot.chatBotFunction(chat,res);
 });
 app.get('/index',function(req,res){
 	res.render('index');
