@@ -1,22 +1,105 @@
 doctype html
-html(lang='en')
-	head
-		mypage
-	body
-		script.
-			window.pAsyncInit = function() {
-			PDK.init({
-			appId: "4968337540873465710", // Change this
-			cookie: true
-			});
-			};
-			(function(d, s, id){
-			var js, pjs = d.getElementsByTagName(s)[0];
-			if (d.getElementById(id)) {return;}
-			js = d.createElement(s); js.id = id;
-			js.src = "//assets.pinterest.com/sdk/sdk.js";
-			pjs.parentNode.insertBefore(js, pjs);
-			}(document, 'script', 'pinterest-jssdk'));
-			var param = {
-				fields: 'id,note,link,image'
-			};
+link#bootstrap-css(href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css', rel='stylesheet')
+script(src='//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js')
+script(src='//code.jquery.com/jquery-1.11.1.min.js')
+// ---- Include the above in your HEAD tag --------
+head
+  meta(name='viewport', content='width=device-width, initial-scale=1')
+  link(rel='stylesheet', type='text/css', href='assets/css/bootstrap.css')
+  // Website CSS style
+  link(rel='stylesheet', type='text/css', href='assets/css/main.css')
+  // Website Font style
+  link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css')
+  // Google Fonts
+  link(href='https://fonts.googleapis.com/css?family=Passion+One', rel='stylesheet', type='text/css')
+  link(href='https://fonts.googleapis.com/css?family=Oxygen', rel='stylesheet', type='text/css')
+  title 개인정보 수정
+style.
+ .form-group{
+ padding-right: 200px;
+ padding-left: 200px;
+ }
+.container
+  .row.main
+    .panel-heading
+      .panel-title.text-center
+        h1.title 개인정보 수정
+        hr
+    .main-login.main-center
+      form.form-horizontal(method='post', action='#')
+        .form-group
+          label.cols-sm-2.control-label(for='name') 이름
+          .cols-sm-10
+            .input-group
+              span.input-group-addon
+                i.fa.fa-user.fa(aria-hidden='true')
+              input#name.form-control(type='text', name='name', placeholder='Enter your Name')
+        .form-group
+          label.cols-sm-2.control-label(for='email') 이메일 
+          .cols-sm-10
+            .input-group
+              span.input-group-addon
+                i.fa.fa-envelope.fa(aria-hidden='true')
+              input#email.form-control(type='text', name='email', placeholder='Enter your Email')
+        .form-group
+          label.cols-sm-2.control-label(for='username') 닉네임
+          .cols-sm-10
+            .input-group
+              span.input-group-addon
+                i.fa.fa-users.fa(aria-hidden='true')
+              input#nickname.form-control(type='text', name='username', placeholder='Enter your Nickname')
+        .form-group
+          label.cols-sm-2.control-label(for='password') 비밀번호
+          .cols-sm-10
+            .input-group
+              span.input-group-addon
+                i.fa.fa-lock.fa-lg(aria-hidden='true')
+              input#password.form-control(type='password', name='password', placeholder='Enter your Password')
+        .form-group
+          label.cols-sm-2.control-label(for='confirm') 비밀번호 확인 
+          .cols-sm-10
+            .input-group
+              span.input-group-addon
+                i.fa.fa-lock.fa-lg(aria-hidden='true')
+              input#confirm.form-control(type='password', name='confirm', placeholder='Confirm your Password')
+        .form-group
+          button.btn.btn-primary.btn-lg.btn-block.login-button(type='button' onclick='enroll()') 수정하기
+script.
+ var info = !{data};
+ document.getElementById('email').value=info.mId;
+ document.getElementById('name').value=info.mName;
+ document.getElementById('nickname').value=info.mNick;
+ document.getElementById('password').value=info.mPwd;
+ document.getElementById('confirm').value=info.mPwd;
+ function enroll(){
+ var name = document.getElementById('name').value;
+ var email = document.getElementById('email').value;
+ var nickname = document.getElementById('nickname').value;
+ var password = document.getElementById('password').value;
+ var confirm = document.getElementById('confirm').value;
+
+ var data = {'name':name, 'email':email,'nickname':nickname, 'password':password,'confirm':confirm};
+ data = JSON.stringify(data);
+ var xhr = new XMLHttpRequest();
+ xhr.open('POST','http://localhost:3000/enroll_receive',true);
+ xhr.setRequestHeader('Content-type','application/json');
+ xhr.send(data);
+ 
+ xhr.addEventListener('load',function(){
+ var result = JSON.parse(xhr.responseText);
+ if(result.result !='ok'){
+  if(result.flag=='1')
+   alert('모든 정보를 입력해주세요.');
+  else if(result.flag=='2')
+   alert('비밀번호가 일치하지 않습니다.');
+  else if(result.flag=='3')
+   alert('이미 존재하는 아이디 입니다.');
+ }
+ else{
+  alert('회원가입 성공');
+  window.close();
+ }
+ });
+ }
+script(type='text/javascript', src='assets/js/bootstrap.js')
+

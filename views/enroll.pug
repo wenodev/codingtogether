@@ -63,11 +63,11 @@ script.
  function enroll(){
  var name = document.getElementById('name').value;
  var email = document.getElementById('email').value;
- var nickname = document.getElementById('nickname').value;
+ var nick = document.getElementById('nickname').value;
  var password = document.getElementById('password').value;
  var confirm = document.getElementById('confirm').value;
 
- var data = {'name':name, 'email':email,'nickname':nickname, 'password':password,'confirm':confirm};
+ var data = {'name':name, 'email':email,'nick':nick, 'password':password,'confirm':confirm};
  data = JSON.stringify(data);
  var xhr = new XMLHttpRequest();
  xhr.open('POST','http://localhost:3000/enroll_receive',true);

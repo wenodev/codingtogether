@@ -64,8 +64,8 @@ app.get('/form',function(req,res){
 	});
 });
 app.get('/mypage',function(req,res) {
-	if(member.mIsLogin) 
-		res.render('mypage');
+	if(member.mIsLogin)
+		res.render('mypage',{data:JSON.stringify(member)});
 	else
 		res.send("<script>alert('로그인이 필요합니다.')</script><meta http-equiv='refresh' content='0; url=http://localhost:3000/form'</meta>");
 });
@@ -104,9 +104,12 @@ app.post('/login_receive',function(req,res){
 			member.mIsLogin = true;	
 			member.mId = id;
 			member.mPwd = pwd;
+			member.mName = user.dataValues.name;
+			member.mNick = user.dataValues.nick;
 			responseData = {'result' : 'ok', 'flag':member.mIsLogin};
 			res.json(responseData);
 			console.log('로그인 성공');
+			console.log(member);
 		}
 	});
 });

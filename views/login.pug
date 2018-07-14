@@ -57,7 +57,7 @@ script(src='//code.jquery.com/jquery-1.11.1.min.js')
 
 		}
 		function sendLogin(url,id,pwd){
-			var info = {'login_id':id, 'login_password':pwd};
+			var info = {'login_id':id, 'login_password':pwd };
 			info = JSON.stringify(info);
 			var xhr = new XMLHttpRequest();
 			xhr.open('POST',url,true);

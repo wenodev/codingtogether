@@ -1,4 +1,5 @@
 var models = require('./models');
+var member = require('./singleton');
 function enrollValidation(info,res){
 	var responseData;
 	//공백 체크
@@ -30,6 +31,8 @@ function enrollValidation(info,res){
 			responseData = {'result':'ok'};
 			res.send(responseData);
 			models.User.create({
+				name: info.name,
+				nick: info.nick,
 				user_id: info.email,
 				password: info.password
 			}).catch(function(err){
