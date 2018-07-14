@@ -1,5 +1,4 @@
 var models = require('./models');
-var member = require('./singleton');
 function enrollValidation(info,res){
 	var responseData;
 	//공백 체크

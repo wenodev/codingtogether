@@ -34,6 +34,8 @@ var comp = require('./compiler');
 var chatbot = require('./chatBot');
 //enroll Validation function
 var validation = require('./enrollValidation');
+//modify info function
+var modifyInfo = require('./modifyInfo');
 // connect To DB
 var models = require('./models');
 models.sequelize.sync()
@@ -80,6 +82,10 @@ app.post('/enroll_receive',function(req,res){
 	var info = req.body;
 	validation.enrollValidation(info,res);
 });
+app.post('/modifyInfo_receive',function(req,res){
+	var info = req.body;
+	modifyInfo.modifyInfoFunction(info,res);
+});
 app.get('/logout',function(req,res){
 	member = {};
 	member.mIsLogin = false;
@@ -109,7 +115,6 @@ app.post('/login_receive',function(req,res){
 			responseData = {'result' : 'ok', 'flag':member.mIsLogin};
 			res.json(responseData);
 			console.log('로그인 성공');
-			console.log(member);
 		}
 	});
 });

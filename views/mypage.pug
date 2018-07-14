@@ -40,7 +40,7 @@ style.
             .input-group
               span.input-group-addon
                 i.fa.fa-envelope.fa(aria-hidden='true')
-              input#email.form-control(type='text', name='email', placeholder='Enter your Email')
+              input#email.form-control(type='text', name='email', placeholder='Enter your Email', readonly)
         .form-group
           label.cols-sm-2.control-label(for='username') 닉네임
           .cols-sm-10
@@ -63,7 +63,7 @@ style.
                 i.fa.fa-lock.fa-lg(aria-hidden='true')
               input#confirm.form-control(type='password', name='confirm', placeholder='Confirm your Password')
         .form-group
-          button.btn.btn-primary.btn-lg.btn-block.login-button(type='button' onclick='enroll()') 수정하기
+          button.btn.btn-primary.btn-lg.btn-block.login-button(type='button' onclick='modify()') 수정하기
 script.
  var info = !{data};
  document.getElementById('email').value=info.mId;
@@ -71,7 +71,7 @@ script.
  document.getElementById('nickname').value=info.mNick;
  document.getElementById('password').value=info.mPwd;
  document.getElementById('confirm').value=info.mPwd;
- function enroll(){
+ function modify(){
  var name = document.getElementById('name').value;
  var email = document.getElementById('email').value;
  var nickname = document.getElementById('nickname').value;
@@ -81,7 +81,7 @@ script.
  var data = {'name':name, 'email':email,'nickname':nickname, 'password':password,'confirm':confirm};
  data = JSON.stringify(data);
  var xhr = new XMLHttpRequest();
- xhr.open('POST','http://localhost:3000/enroll_receive',true);
+ xhr.open('POST','http://localhost:3000/modifyInfo_receive',true);
  xhr.setRequestHeader('Content-type','application/json');
  xhr.send(data);
  
@@ -92,12 +92,10 @@ script.
    alert('모든 정보를 입력해주세요.');
   else if(result.flag=='2')
    alert('비밀번호가 일치하지 않습니다.');
-  else if(result.flag=='3')
-   alert('이미 존재하는 아이디 입니다.');
  }
  else{
-  alert('회원가입 성공');
-  window.close();
+  alert('수정 완료');
+  location.href='/form';
  }
  });
  }
