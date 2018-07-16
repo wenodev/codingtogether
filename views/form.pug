@@ -64,7 +64,7 @@ head
 			
 		script.
 			$(document).ready(function(){
-				$('#navbar').load('http://localhost:3000/header')
+				$('#navbar').load('http://14.63.194.152:3000/header')
 			});
 			document.getElementById('chatUser').addEventListener('keydown',function(event){
 				if(event.keyCode ==13){
@@ -73,11 +73,11 @@ head
 				}
 			});
 			function compileFunction(){
-				sendAjax('http://localhost:3000/form_receive',code.value,language.value);
+				sendAjax('http://14.63.194.152:3000/form_receive',code.value,language.value);
 			}
 			function chatFunction(){
 				document.getElementById('chatBot').value += '\n나 : '+document.getElementById('chatUser').value;
-				chatting('http://localhost:3000/form_chatting',chatUser.value);
+				chatting('http://14.63.194.152:3000/form_chatting',chatUser.value);
 			}
 			function sendAjax(url,data,language){
 				var data = {'code': data ,'language': language};

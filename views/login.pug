@@ -38,7 +38,7 @@ script(src='//code.jquery.com/jquery-1.11.1.min.js')
 									| Sign Up Here
 	script.
 		function login(){
-			sendLogin('http://localhost:3000/login_receive',login_id.value,login_password.value);
+			sendLogin('http://14.63.194.152:3000/login_receive',login_id.value,login_password.value);
 		}
 		function enroll(url,title,w,h){
 			var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : window.screenX;
@@ -70,7 +70,7 @@ script(src='//code.jquery.com/jquery-1.11.1.min.js')
 				alert('정보가 일치하지 않습니다.')
 				return;
 			} else {
-				location.href="http://localhost:3000/index";
+				location.href="http://14.63.194.152:3000/index";
 			}
 			});
 		}

@@ -81,7 +81,7 @@ script.
  var data = {'name':name, 'email':email,'nickname':nickname, 'password':password,'confirm':confirm};
  data = JSON.stringify(data);
  var xhr = new XMLHttpRequest();
- xhr.open('POST','http://localhost:3000/modifyInfo_receive',true);
+ xhr.open('POST','http://14.63.194.152:3000/modifyInfo_receive',true);
  xhr.setRequestHeader('Content-type','application/json');
  xhr.send(data);
  

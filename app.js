@@ -68,7 +68,7 @@ app.get('/mypage',function(req,res) {
 	if(member.mIsLogin)
 		res.render('mypage',{data:JSON.stringify(member)});
 	else
-		res.send("<script>alert('로그인이 필요합니다.')</script><meta http-equiv='refresh' content='0; url=http://localhost:3000/form'</meta>");
+		res.send("<script>alert('로그인이 필요합니다.')</script><meta http-equiv='refresh' content='0; url=http://14.63.194.152:3000/form'</meta>");
 });
 app.get('/login',function(req,res){
 	res.render('login');
