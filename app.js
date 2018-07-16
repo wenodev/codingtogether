@@ -56,19 +56,22 @@ app.get('/image',function(req,res){
 		res.render("image",{data: JSON.stringify(pins)});
 	});
 });
-app.get('/form',function(req,res){
+app.get('/about',function(req,res){
+	res.render('about');
+});
+app.get('/practice',function(req,res){
 	weather.find({search: 'Seoul',degreeType: 'C'}, function(err,result){
 	if(err)
 		console.log(err);
 	else
-		res.render("form",{data: JSON.stringify(result)});
+		res.render("practice",{data: JSON.stringify(result)});
 	});
 });
 app.get('/mypage',function(req,res) {
 	if(member.mIsLogin)
 		res.render('mypage',{data:JSON.stringify(member)});
 	else
-		res.send("<script>alert('로그인이 필요합니다.')</script><meta http-equiv='refresh' content='0; url=http://localhost:3000/form'</meta>");
+		res.send("<script>alert('로그인이 필요합니다.')</script><meta http-equiv='refresh' content='0; url=http://localhost:3000/login'</meta>");
 });
 app.get('/login',function(req,res){
 	res.render('login');
@@ -117,7 +120,7 @@ app.post('/login_receive',function(req,res){
 		}
 	});
 });
-app.post('/form_receive',function(req,res) {
+app.post('/practice_receive',function(req,res) {
 	//var title = req.body.title;
 	var language = req.body.language;
 	var code = req.body.code;
@@ -133,7 +136,7 @@ app.post('/form_receive',function(req,res) {
 		console.error(err);
 	});
 });
-app.post('/form_chatting',function(req,res){
+app.post('/practice_chatting',function(req,res){
 	var chat = req.body.chat;
 	chatbot.chatBotFunction(chat,res);
 });

@@ -73,11 +73,11 @@ head
 				}
 			});
 			function compileFunction(){
-				sendAjax('http://localhost:3000/form_receive',code.value,language.value);
+				sendAjax('http://localhost:3000/practice_receive',code.value,language.value);
 			}
 			function chatFunction(){
 				document.getElementById('chatBot').value += '\n나 : '+document.getElementById('chatUser').value;
-				chatting('http://localhost:3000/form_chatting',chatUser.value);
+				chatting('http://localhost:3000/practice_chatting',chatUser.value);
 			}
 			function sendAjax(url,data,language){
 				var data = {'code': data ,'language': language};
