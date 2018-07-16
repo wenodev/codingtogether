@@ -24,7 +24,6 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 //bootstrap
 app.use(express.static(__dirname + '/public'));
-app.use('/user',express.static('uploads'));
 //singleton
 var member = require('./singleton');
 member.mIsLogin = false;
@@ -62,7 +61,7 @@ app.get('/form',function(req,res){
 	if(err)
 		console.log(err);
 	else
-		res.render("form",{data: JSON.stringify(result) ,login: member.mIsLogin});
+		res.render("form",{data: JSON.stringify(result)});
 	});
 });
 app.get('/mypage',function(req,res) {
@@ -140,6 +139,9 @@ app.post('/form_chatting',function(req,res){
 });
 app.get('/index',function(req,res){
 	res.render('index');
+});
+app.get('/header',function(req,res){
+	res.render('header',{login:member.mIsLogin});
 });
 app.listen(3000,function() {
 	console.log('server connected');

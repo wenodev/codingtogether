@@ -15,6 +15,8 @@ module.exports = function (sequelize, DataTypes) {
   	}, {
     // don't use camelcase for automatically added attributes but underscore style
     // so updatedAt will be updated_at
+	charset: 'utf8',
+	collate: 'utf8_unicode_ci',
     underscored: true,
 
     // disable the modification of tablenames; By default, sequelize will automatically

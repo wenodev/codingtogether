@@ -4,47 +4,21 @@ head
   meta(name='viewport', content='width = device-width', initial-scale='1')
   title CodingTogether
   link(rel='stylesheet', href='css/bootstrap.css')
+  script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js')
 style(type='text/css').
   .jumbotron{
-  background-image : url('../images/galaxy.jpg');
+  background-image : url('galaxy.jpg');
   text-shadow : black 0.2em 0.2em 0.2em;
   color : white
   }
-nav.navbar.navbar-default
-  .container-fluid
-    .navbar-header
-      button.navbar-toggle(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1', aria-expanded='false')
-        span.sr-only
-        span.icon-bar
-        span.icon-bar
-        span.icon-bar
-      a.navbar-brand(href='#') CodingTogether
-    #bs-example-navbar-collpase-1.collapse.navbar-collapse
-      ul.nav.navbar-nav
-        li.active
-          a(href='#')
-            | About us 
-            span.sr-only
-        li
-          a(href='form') Practice 
-        li.active
-          a(href='#')
-            | Dictinoary 
-            span.sr-only
-        li
-          a(href='#')
-            | Community 
-            span.sr-only
-      ol.nav.nav-pills.pull-right
-        li.active(role='presentation')
-          a(href='#') Home
-        li(role='presentation')
-          a(href='#') &#xB85C;&#xADF8;&#xC778;
-        li(role='presentation')
-          a(href='#') &#xB9C8;&#xC774;&#xD398;&#xC774;&#xC9C0;
+script.
+ $(document).ready(function(){
+  $('#navbar').load('http://localhost:3000/header')
+ });
+.navbar#navbar
 .container
   .jumbotron
-    h1.text-center  &#xCF54;&#xB529;&#xD22C;&#xAC8C;&#xB354;&#xB97C; &#xC18C;&#xAC1C;&#xD569;&#xB2C8;&#xB2E4;.
+    h1.text-center 코딩 투게더를 소개합니다. 
     p.text-center
       a.btn.btn-primary.btn-lg(href='form', role='button') 코딩하러 가기 
 .row
@@ -86,4 +60,3 @@ footer(style='background-color: #000000; color: #ffffff;')
       .col-sm-4(style='text - align: center;')
         h4 Copyright &copy; 2018 CodingTogether
         h5 &#xC190;&#xC8FC;&#xC6D0; &#xC774;&#xC8FC;&#xD615; &#xC190;&#xC815;&#xD6C8; &#xCD5C;&#xCC2C;&#xC885;
-
