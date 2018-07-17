@@ -19,6 +19,7 @@ style.
  padding-right: 200px;
  padding-left: 200px;
  }
+#navbar
 .container
   .row.main
     .panel-heading
@@ -65,6 +66,9 @@ style.
         .form-group
           button.btn.btn-primary.btn-lg.btn-block.login-button(type='button' onclick='modify()') 수정하기
 script.
+ $(document) .ready(function(){
+  $('#navbar').load('http://localhost:3000/header') 
+ });
  var info = !{data};
  document.getElementById('email').value=info.mId;
  document.getElementById('name').value=info.mName;

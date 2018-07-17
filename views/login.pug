@@ -20,16 +20,11 @@ script(src='//code.jquery.com/jquery-1.11.1.min.js')
 						span.input-group-addon
 							i.glyphicon.glyphicon-lock
 						input#login_password.form-control(type='password', name='password', placeholder='password')
-					.input-group
-						.checkbox
-							label
-								input#login-remember(type='checkbox', name='remember', value='1')
-								|  Remember me
 					.form-group(style='margin-top:10px')
 						// Button
 						.col-sm-12.controls
-							input#btn-login.btn.btn-success(value='로그인' class='login' onclick='login()') 
-							input#btn-enroll.btn.btn-primary(value='회원가입' class='login' onclick='enroll("enroll","회원가입",790,600)')
+							input#btn-login.btn.btn-success(value='로그인' class='login' readonly='readonly' onclick='login()') 
+							input#btn-enroll.btn.btn-primary(value='회원가입' class='login' readonly='readonly' onclick='enroll("enroll","회원가입",790,600)')
 					.form-group
 						.col-md-12.control
 							div(style='border-top: 1px solid#888; padding-top:15px; font-size:85%')
@@ -37,6 +32,18 @@ script(src='//code.jquery.com/jquery-1.11.1.min.js')
 								a(href='#', onclick="$('#loginbox').hide(); $('#signupbox').show()")
 									| Sign Up Here
 	script.
+		document.getElementById('login_password').addEventListener('keydown',function(event){
+			if(event.keyCode==13){
+				event.preventDefault();
+				document.getElementById('btn-login').click();
+			}
+		});
+		document.getElementById('login_id').addEventListener('keydown',function(event){
+			if(event.keyCode==13){
+				event.preventDefault();
+				document.getElementById('btn-login').click();
+			}
+		});
 		function login(){
 			sendLogin('http://localhost:3000/login_receive',login_id.value,login_password.value);
 		}
@@ -54,7 +61,6 @@ script(src='//code.jquery.com/jquery-1.11.1.min.js')
 			if (window.focus) {
 				newWindow.focus();
 			}
-
 		}
 		function sendLogin(url,id,pwd){
 			var info = {'login_id':id, 'login_password':pwd };
@@ -105,13 +111,6 @@ script(src='//code.jquery.com/jquery-1.11.1.min.js')
 							label.col-md-3.control-label(for='icode') Invitation Code
 							.col-md-9
 								input.form-control(type='text', name='icode', placeholder='')
-						.form-group
-						// Button
-							.col-md-offset-3.col-md-9
-								button#btn-signup.btn.btn-info(type='button')
-									i.icon-hand-right
-									|  &nbsp Sign Up
-									span(style='margin-left:8px;') or
 						.form-group(style='border-top: 1px solid #999; padding-top:20px')
 							.col-md-offset-3.col-md-9
 								button#btn-fbsignup.btn.btn-primary(type='button')
