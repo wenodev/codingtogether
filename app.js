@@ -5,19 +5,11 @@ var app = express();
 var fs = require('fs');
 var PDK = require('node-pinterest');
 var pinterestAPI = require('pinterest-api');
-var multer = require('multer');
-var _storage = multer.diskStorage({
-    destination: function(req,file,cb) {
-        cb(null,'uploads/');
-    },
-    filename: function(req,file,cb) {
-        cb(null,file.originalname);
-    }
-});
-var upload = multer({storage: _storage});
 var spawn = require('child_process').spawn;
 var bodyParser = require('body-parser');
 var weather = require('weather-js');
+var request = require('request');
+var client = require('cheerio-httpcli');
 app.set('view engine','pug');
 app.set('views','./views');
 app.use(bodyParser.urlencoded({extended: false}));
@@ -31,6 +23,8 @@ member.mIsLogin = false;
 var comp = require('./compiler');
 //chatbot function
 var chatbot = require('./chatBot');
+//login function
+var login = require('./login');
 //enroll Validation function
 var validation = require('./enrollValidation');
 //modify info function
@@ -97,28 +91,8 @@ app.post('/login_receive',function(req,res){
 	var id = req.body.login_id;
 	var pwd = req.body.login_password;
 	var responseData;
-	//DB에서 회원정보 검색
-	models.User.findOne({
-		where: { user_id: id}
-	})
-	.then(function(user) {
-		if(user==null || user.dataValues.password!=pwd) {
-			responseData = {'result' : 'no', 'flag' : member.mIsLogin};
-			res.json(responseData);
-			console.log('로그인 실패');
-		}
-		else{
-			//로그인 성공시 Singleton 객체에 id,pwd값 setting
-			member.mIsLogin = true;	
-			member.mId = id;
-			member.mPwd = pwd;
-			member.mName = user.dataValues.name;
-			member.mNick = user.dataValues.nick;
-			responseData = {'result' : 'ok', 'flag':member.mIsLogin};
-			res.json(responseData);
-			console.log('로그인 성공');
-		}
-	});
+	//로그인 메소드 호출
+	login.loginFunction(id,pwd,res);
 });
 app.post('/practice_receive',function(req,res) {
 	//var title = req.body.title;

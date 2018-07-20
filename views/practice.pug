@@ -60,7 +60,6 @@ head
 		h3(style="text-align:center;") 사용언어 선택
 		select#language.form-control(name='language' onchange='selectedLanguage.call(this,event)') 
 			option(value='c') C
-			option(value='c++') C++
 			option(value='java') Java
 			option(value='python') Python
 		h4 코드 연습장 
@@ -91,6 +90,7 @@ head
 			editor.setSize(410,300);
 			$(document).ready(function(){
 				$('#navbar').load('http://localhost:3000/header')
+				//setInterval('timer()',1000);
 			});
 			document.getElementById('chatUser').addEventListener('keydown',function(event){
 				if(event.keyCode ==13){
@@ -128,11 +128,10 @@ head
 				document.getElementById('chatUser').value = null;
 				xhr.addEventListener('load',function() {
 				var result = JSON.parse(xhr.responseText);
-				alert(result);
-				if(result.result =='ok')
+				if(result.result=='yes' || result.result=='no')
 					document.getElementById('chatBot').value += '\nbot : '+result.answer;
 				else
-					document.getElementById('chatBot').value += '\nbot : '+result.answer;
+					window.open(result.answer,"검색결과","width=600, height=700");
 				});
 			}
 			function imageShow(src,width,height,alt) {
@@ -149,9 +148,6 @@ head
 					case 'c':
 						editor.getDoc().setValue('#include<stdio.h>\nint main()\n{\n\n\treturn 0;\n}')
 						break;
-					case 'c++':
-						editor.getDoc().setValue('#include<iostream>\nusing namespace std;\nint main() \n{\n\n}')
-						break;
 					case 'java':
 						editor.getDoc().setValue('public class Test {\n\tpublic static void main(String[] args) {\n\n\t}\n}')
 						break;
@@ -160,4 +156,3 @@ head
 						break;
 				}
 			}
-
