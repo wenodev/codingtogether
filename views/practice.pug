@@ -22,7 +22,7 @@ head
 		}
 		#output{
 			resize:none;
-			width:400px; 
+			width:410px; 
 			height:50px; 
 			color:white; 
 			background:#2E2E2E;
@@ -68,7 +68,7 @@ head
 		div(class='form-group color-border')
 			textarea#code(name='code') #include<stdio.h>&#10;int main()&#10;{&#10;&#10;	return 0;&#10;}
 			p
-			textarea#output(type='text' name='output' readonly='readonly')
+			textarea#output(type='text' name='output')
 			p
 			button#ajax_post(type = 'button' class='btn btn-primary' onclick='compileFunction()') 제출하기
 			p
@@ -88,6 +88,7 @@ head
 				theme: 'darcula',
 				mode: 'javascript'
 			});
+			editor.setSize(410,300);
 			$(document).ready(function(){
 				$('#navbar').load('http://localhost:3000/header')
 			});
@@ -127,6 +128,7 @@ head
 				document.getElementById('chatUser').value = null;
 				xhr.addEventListener('load',function() {
 				var result = JSON.parse(xhr.responseText);
+				alert(result);
 				if(result.result =='ok')
 					document.getElementById('chatBot').value += '\nbot : '+result.answer;
 				else

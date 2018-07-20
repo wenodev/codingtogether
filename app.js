@@ -128,13 +128,6 @@ app.post('/practice_receive',function(req,res) {
 	var source_path = './sources/';	
 	//컴파일 메소드 호출
 	comp.compileFunction(language,source_path,source,res);
-	//작성 코드 DB에 저장
-	models.Code.create( {
-		title: 'test',
-		code: source 
-	}).catch(function(err) {
-		console.error(err);
-	});
 });
 app.post('/practice_chatting',function(req,res){
 	var chat = req.body.chat;
