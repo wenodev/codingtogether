@@ -128,10 +128,14 @@ head
 				document.getElementById('chatUser').value = null;
 				xhr.addEventListener('load',function() {
 				var result = JSON.parse(xhr.responseText);
-				if(result.result=='yes' || result.result=='no')
+				if(result.result=='yes' || result.result=='no'){
 					document.getElementById('chatBot').value += '\nbot : '+result.answer;
-				else
+					$('#chatBot').scrollTop($('#chatBot')[0].scrollHeight);
+				}
+				else {
 					window.open(result.answer,"검색결과","width=600, height=700");
+					$('#chatBot').scrollTop($('#chatBot')[0].scrollHeight);
+				}
 				});
 			}
 			function imageShow(src,width,height,alt) {

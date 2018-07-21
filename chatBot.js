@@ -5,6 +5,11 @@ function chatBotFunction(chat,res){
 	if(chat.match(/검색/)){
 		var i = chat.indexOf("검색",0);
 		var word = chat.substring(0,i);
+		if(word.length<1){
+			responseData = {'result':'no','answer':'형식에 맞지 않는 검색단어'};
+			res.json(responseData);
+			return;
+		}
 		var aList;
 		client.fetch('http://www.google.com/search',{q:word},function(err,$,response,body){
 			aList = $("div.rc").find(".r").find("a");

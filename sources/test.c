@@ -1,6 +1,6 @@
 #include<stdio.h>
 int main()
 {
-	printf("ㅋㅋㅋㅇㄹㅇㅁㄴㄹ");
+asdfasdfasdf
 	return 0;
 }

@@ -13,7 +13,7 @@ function compileFunction(lan,path,source,res){
 				file = path+'Test.java';
 			else if(lan=='python')
 				file = path+'test.py';
-			fs.writeFile(file,source,'utf-8',function(error){console.log('소스파일 작성 완료.');});
+			fs.writeFile(file,source,'utf-8',function(error){});
 			callback(null,file);
 		},
 		function(file,callback){
@@ -24,9 +24,18 @@ function compileFunction(lan,path,source,res){
 			else if(lan=='python')
 				compile = spawn('python3',[file]);
 			console.log('컴파일 완료 여기서 실행파일이 생성됨');
-			setTimeout(callback,1000,null,compile);
+			compile.stderr.on('data',function(data){
+				callback(true,String(data));
+			});
+			compile.on('close',function(data){
+				if(data==0)
+					setTimeout(callback,1000,null,compile);
+			});
 		},
 		function(compile,callback){
+			if(compile=='err'){
+				callback(null,'err');
+			}
 			if(lan=='c'){
 				run = spawn('./a.out',[]);
 				run.stdout.on('data',function(stdout){
@@ -50,9 +59,12 @@ function compileFunction(lan,path,source,res){
 		}
 	];
 
-	async.waterfall(tasks,function(err){
-		if(err)
+	async.waterfall(tasks,function(err,msg){
+		if(err){
+			responseData = {'result':'ok','output':msg};
+			res.json(responseData);
 			console.log('err');
+		}
 		else
 			console.log('done');
 	});
@@ -63,25 +75,5 @@ function compileFunction(lan,path,source,res){
 	}).catch(function(err) {
 		console.error(err);
 	});
-	
-	//	compile.on('close',function(data){
-	//		if(data ==0) {
-	//			run.stdout.on('data',function(output){
-	//				console.log('실행 완료');
-	//				responseData = {'result':'ok','output': output.toString('utf8'),'language':lan};
-	//				res.json(responseData);
-	//			});
-	//			run.stderr.on('data', function (output) {
-	//				console.log(String(output));
-	//			});
-	//			run.on('close', function (output) {
-	//				console.log('stdout: ' + output);
-	//			});
-	//			run.stdin.on('readable',function(){
-	//				responseData = {'result':'ok','output':'입력:'};
-	//				res.json(responseData);
-	//			});
-	//		}
-	//	});
 }
 exports.compileFunction = compileFunction;
