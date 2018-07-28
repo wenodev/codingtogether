@@ -2,8 +2,9 @@
   "name": "server_side_javascript",
   "version": "1.0.0",
   "description": "server side javascript tutorials",
-  "main": "hello.js",
+  "main": "app.js",
   "scripts": {
+    "start": "supervisor app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

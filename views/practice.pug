@@ -138,15 +138,6 @@ head
 				}
 				});
 			}
-			function imageShow(src,width,height,alt) {
-				var position = document.getElementById('weather');
-				var img= document.createElement('img');
-				img.src = src;
-				img.width = width;
-				img.height = height;
-				img.alt = alt;
-				position.insertBefore(img,position.childNodes[0]);
-			}
 			function selectedLanguage(event){
 				switch(this.options[this.selectedIndex].value){
 					case 'c':

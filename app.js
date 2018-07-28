@@ -7,9 +7,9 @@ var PDK = require('node-pinterest');
 var pinterestAPI = require('pinterest-api');
 var spawn = require('child_process').spawn;
 var bodyParser = require('body-parser');
-var weather = require('weather-js');
 var request = require('request');
 var client = require('cheerio-httpcli');
+//templete engine and path
 app.set('view engine','pug');
 app.set('views','./views');
 app.use(bodyParser.urlencoded({extended: false}));
@@ -18,7 +18,6 @@ app.use(bodyParser.json());
 app.use(express.static(__dirname + '/public'));
 //singleton
 var member = require('./singleton');
-member.mIsLogin = false;
 //comfile function
 var comp = require('./compiler');
 //chatbot function
@@ -54,12 +53,7 @@ app.get('/about',function(req,res){
 	res.render('about');
 });
 app.get('/practice',function(req,res){
-	weather.find({search: 'Seoul',degreeType: 'C'}, function(err,result){
-	if(err)
-		console.log(err);
-	else
-		res.render("practice",{data: JSON.stringify(result)});
-	});
+	res.render("practice");
 });
 app.get('/mypage',function(req,res) {
 	if(member.mIsLogin)
@@ -83,9 +77,9 @@ app.post('/modifyInfo_receive',function(req,res){
 	modifyInfo.modifyInfoFunction(info,res);
 });
 app.get('/logout',function(req,res){
-	member = {};
+	member.mId=null; member.mPwd = null; member.mName = null; member.mNick = null;
 	member.mIsLogin = false;
-	res.redirect('back');
+	res.render('index');
 });
 app.post('/login_receive',function(req,res){
 	var id = req.body.login_id;
@@ -113,7 +107,8 @@ app.get('/index',function(req,res){
 app.get('/header',function(req,res){
 	res.render('header',{login:member.mIsLogin});
 });
-app.listen(3000,function() {
+
+app.listen(3000,function(){
 	console.log('server connected');
 });
 

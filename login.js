@@ -1,5 +1,6 @@
 var models = require('./models');
 var member = require('./singleton');
+member.mIsLogin = false;
 
 function loginFunction(id,pwd,res){
 	var responseData;
@@ -8,6 +9,7 @@ function loginFunction(id,pwd,res){
 	})
 		.then(function(user){
 			if(user==null || user.dataValues.password!=pwd){
+				member.mIsLogin=false;
 				responseData = {'result':'no','flag':member.mIsLogin};
 				res.json(responseData);
 				console.log('로그인 실패');

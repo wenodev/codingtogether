@@ -58,7 +58,6 @@ function compileFunction(lan,path,source,res){
 			callback(null);
 		}
 	];
-
 	async.waterfall(tasks,function(err,msg){
 		if(err){
 			responseData = {'result':'ok','output':msg};
@@ -69,7 +68,7 @@ function compileFunction(lan,path,source,res){
 			console.log('done');
 	});
 	//DB저장
-	models.Code.create( {
+	models.Code.create({
 		title: 'test',
 		code: source 
 	}).catch(function(err) {

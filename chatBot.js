@@ -1,5 +1,4 @@
 var client = require('cheerio-httpcli');
-var async = require('async');
 function chatBotFunction(chat,res){
 	var responseData;
 	if(chat.match(/검색/)){
@@ -13,7 +12,7 @@ function chatBotFunction(chat,res){
 		var aList;
 		client.fetch('http://www.google.com/search',{q:word},function(err,$,response,body){
 			aList = $("div.rc").find(".r").find("a");
-			responseData = {'result':'search','answer':aList[0].attribs.href};
+			responseData = {'result' : 'search', 'answer':aList[0].attribs.href};
 			res.json(responseData);
 		});
 	}
