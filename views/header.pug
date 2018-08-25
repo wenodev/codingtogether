@@ -18,22 +18,43 @@ style.
 		display: flex;
 		padding-top:5px;
 	}
+	/* ANIMATED MINUS */
+	.navbar-toggle.minus.collapsed .icon-bar:nth-of-type(1) {
+		transform: translate3d(0,0,0) rotate(0deg);
+	}
+
+	.navbar-toggle.minus.collapsed .icon-bar:nth-of-type(2) {
+		transform: translate3d(0,0,0) rotate(0deg);
+	}
+
+	.navbar-toggle.minus.collapsed .icon-bar:nth-of-type(3) {
+		transform: translate3d(0,0,0) rotate(0deg);
+	}
+
+	.navbar-toggle.minus .icon-bar:nth-of-type(1) {
+		transform: translate3d(0,6px,0);
+	}
+
+	.navbar-toggle.minus .icon-bar:nth-of-type(3) {
+		transform: translate3d(0,-6px,0);
+	}
+	/* END ANIMATED MINUS */
 nav.navbar.navbar-default
 	.container-fluid
 		.navbar-header
-			button.navbar-toggle(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1', aria-expanded='false')
+			button.navbar-toggle(type='button' class='navbar-toggle minus collapsed' data-toggle='collapse' data-target='#navbar-collapse-minus')
 				span.sr-only
 				span.icon-bar
 				span.icon-bar
 				span.icon-bar
 			a.navbar-brand(href='index') CodingTogether
-		#bs-example-navbar-collpase-1.collapse.navbar-collapse
-			ul.nav.navbar-nav
-				li.active
+		#navbar-collapse.minus.collapse.navbar-collapse
+			ul.nav.navbar-nav.navbar-left
+				li(data-toggle='collapse', data-target='#navbar-collapse.in')
 					a(href='about')
 						| About us
 						span.sr-only
-				li
+				li(data-toggle='collapse', data-target='#navbar-collapse.in')
 					a(href='practice') Practice 
 				li.active
 					a(href='#')

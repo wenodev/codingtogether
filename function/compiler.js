@@ -1,7 +1,7 @@
 var fs = require('fs');
 var spawn = require('child_process').spawn;
 var exec = require('child_process').exec;
-var models = require('./models');
+var models = require('../models');
 var async = require('async');
 function compileFunction(lan,path,source,res){
 	var file, compile,run,responseData;

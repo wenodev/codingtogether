@@ -1,4 +1,4 @@
-var models = require('./models');
+var models = require('../models');
 var member = require('./singleton');
 member.mIsLogin = false;
 

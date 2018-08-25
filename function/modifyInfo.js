@@ -1,4 +1,4 @@
-var models = require('./models');
+var models = require('../models');
 function modifyInfoFunction(info,res){
 	var responseData;
 	//공백 체크

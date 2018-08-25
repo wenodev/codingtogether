@@ -3,8 +3,6 @@ var sequelize = require('sequelize');
 var parse = require('parse-json');
 var app = express();
 var fs = require('fs');
-var PDK = require('node-pinterest');
-var pinterestAPI = require('pinterest-api');
 var spawn = require('child_process').spawn;
 var bodyParser = require('body-parser');
 var request = require('request');
@@ -14,26 +12,26 @@ app.set('view engine','pug');
 app.set('views','./views');
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-//bootstrap
-app.use(express.static(__dirname + '/public'));
+//public directory path setting
+app.use(express.static(__dirname));
 //singleton
-var member = require('./singleton');
+var member = require('./function/singleton');
 //comfile function
-var comp = require('./compiler');
+var comp = require('./function/compiler');
 //chatbot function
-var chatbot = require('./chatBot');
+var chatbot = require('./function/chatBot');
 //login function
-var login = require('./login');
+var login = require('./function/login');
 //enroll Validation function
-var validation = require('./enrollValidation');
+var validation = require('./function/enrollValidation');
 //modify info function
-var modifyInfo = require('./modifyInfo');
+var modifyInfo = require('./function/modifyInfo');
 // connect To DB
 var models = require('./models');
 models.sequelize.sync()
-  .then(function() {
+	.then(function() {
 	console.log('✓ DB connection success.');
-    console.log('  Press CTRL-C to stop\n');
+	  console.log('  Press CTRL-C to stop\n');
   })
   .catch(function(err) {
     console.error(err);
@@ -41,14 +39,6 @@ models.sequelize.sync()
     process.exit();
   });
 
-app.get('/image',function(req,res){
-	var pinterest = pinterestAPI('godparty');
-	pinterest.getPinsFromBoard('project', true, function (pins) {
-		console.log(pins.data[0].images);
-		var url = pins.data[0].images['237x'].url;
-		res.render("image",{data: JSON.stringify(pins)});
-	});
-});
 app.get('/about',function(req,res){
 	res.render('about');
 });
@@ -107,6 +97,9 @@ app.get('/index',function(req,res){
 app.get('/header',function(req,res){
 	res.render('header',{login:member.mIsLogin});
 });
+app.get('/challenge',function(req,res){
+	res.render('challenge');
+})
 
 app.listen(3000,function(){
 	console.log('server connected');

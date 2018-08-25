@@ -1,4 +1,4 @@
-var models = require('./models');
+var models = require('../models');
 function enrollValidation(info,res){
 	var responseData;
 	//공백 체크
