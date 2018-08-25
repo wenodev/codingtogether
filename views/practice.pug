@@ -1,0 +1,153 @@
+doctype html
+head
+	style.
+		.jumbotron{
+			margin-left: 70px;
+			margin-top : 5px;
+			background-color: white !important;
+			border: 1px solid black;
+		}
+		.color-border textarea {
+			border: 1px solid #5882FA;
+		}
+		.color-border input {
+			border: 1px solid black;
+			background-color: #5882FA;
+			height: 40px;
+			font-size: 30px;
+		}
+		#language{
+			width: 200px;
+			margin-left: 100px;
+		}
+		#output{
+			resize:none;
+			width:410px; 
+			height:50px; 
+			color:white; 
+			background:#2E2E2E;
+			border-color: black;
+		}
+	script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js')
+	//codemirror
+	script(src='./codemirror-5.39.0/lib/codemirror.js')
+	link(rel='stylesheet', href='./codemirror-5.39.0/lib/codemirror.css')
+	link(rel='stylesheet', href='./codemirror-5.39.0/theme/darcula.css')
+	link(rel'stylesheet', href='./codemirror-5.39.0/theme/eclipse.css')
+	script(src='./codemirror-5.39.0/mode/javascript/javascript.js')
+	meta(charset='utf-8')
+	meta(http-equiv='X-UA-Compatible', content='IE=edge')
+	meta(name='viewport', content='width=device-width, initial-scale=1')
+	// The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags
+	meta(name='description', content='')
+	meta(name='author', content='')
+	link(rel='icon', href='../../favicon.ico')
+	title CodingTogether
+	// Bootstrap core CSS
+	link(rel='stylesheet', href='css/bootstrap.css')
+	// Custom styles for this template
+	link(href='css/jumbotron.css', rel='stylesheet')
+	// Latest compiled and minified CSS
+	link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css')
+	//Latest compiled and minified JavaScript
+	script(src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js')
+	// (Optional) Latest compiled and minified JavaScript translation files
+	script(src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/i18n/defaults-*.min.js')
+
+#navbar
+.container
+	.jumbotron.pull-left
+		h3(style="text-align:center;") 사용언어 선택
+		select#language.form-control(name='language' onchange='selectedLanguage.call(this,event)') 
+			option(value='c') C
+			option(value='java') Java
+			option(value='python') Python
+		h4 코드 연습장 
+		p.lead
+		div(class='form-group color-border')
+			textarea#code(name='code') #include<stdio.h>&#10;int main()&#10;{&#10;&#10;	return 0;&#10;}
+			p
+			textarea#output(type='text' name='output')
+			p
+			button#ajax_post(type = 'button' class='btn btn-primary' onclick='compileFunction()') 제출하기
+			p
+	.jumbotron.pull-right
+		img(src="images/drib_blink_bot.gif" width = 180 height = 135 align = 'center')
+		div(class='form-group color-border')
+			textarea#chatBot(class='form-control' style='resize:none; width:340px; height:300px;' name='chatBot' readonly='readonly') bot : 안녕 내가 도와줄게!
+			p
+			textarea#chatUser(class='form-control' style='resize:none; width:340px; height:50;' name='chatUser')
+			p
+			button#chatPost(type='button' class='btn btn-primary' onclick='chatFunction()') 보내기
+		script.
+			var textarea = document.getElementById('code');
+			var editor = CodeMirror.fromTextArea(textarea,{
+				lineNumbers: true,
+				lineWrapping: true,
+				theme: 'darcula',
+				mode: 'javascript'
+			});
+			editor.setSize(410,300);
+			$(document).ready(function(){
+				$('#navbar').load('http://localhost:3000/header')
+				//setInterval('timer()',1000);
+			});
+			document.getElementById('chatUser').addEventListener('keydown',function(event){
+				if(event.keyCode ==13){
+				event.preventDefault();
+					document.getElementById('chatPost').click();
+				}
+			});
+			function compileFunction(){
+				sendAjax('http://localhost:3000/practice_receive',editor.getValue(),language.value);
+			}
+			function chatFunction(){
+				document.getElementById('chatBot').value += '\n나 : '+document.getElementById('chatUser').value;
+				chatting('http://localhost:3000/practice_chatting',chatUser.value);
+			}
+			function sendAjax(url,data,language){
+				var data = {'code': data ,'language': language};
+				data = JSON.stringify(data);
+				var xhr = new XMLHttpRequest();
+				xhr.open('POST',url,true);
+				xhr.setRequestHeader('Content-type','application/json');
+				xhr.send(data);
+				xhr.addEventListener('load',function() {
+				var result = JSON.parse(xhr.responseText);
+				if(result.result !='ok')return;
+					document.getElementById('output').value=result.output;
+				});
+			}				
+			function chatting(url,val){
+				var chat = {'chat':val};
+				chat = JSON.stringify(chat);
+				var xhr = new XMLHttpRequest();
+				xhr.open('POST',url,true);
+				xhr.setRequestHeader('Content-type','application/json');
+				xhr.send(chat);
+				document.getElementById('chatUser').value = null;
+				xhr.addEventListener('load',function() {
+				var result = JSON.parse(xhr.responseText);
+				if(result.result=='yes' || result.result=='no'){
+					document.getElementById('chatBot').value += '\nbot : '+result.answer;
+					$('#chatBot').scrollTop($('#chatBot')[0].scrollHeight);
+				}
+				else {
+					window.open(result.answer,"검색결과","width=600, height=700");
+					$('#chatBot').scrollTop($('#chatBot')[0].scrollHeight);
+				}
+				});
+			}
+			function selectedLanguage(event){
+				switch(this.options[this.selectedIndex].value){
+					case 'c':
+						editor.getDoc().setValue('#include<stdio.h>\nint main()\n{\n\n\treturn 0;\n}')
+						break;
+					case 'java':
+						editor.getDoc().setValue('public class Test {\n\tpublic static void main(String[] args) {\n\n\t}\n}')
+						break;
+					case 'python':
+						editor.getDoc().setValue('');
+						break;
+				}
+			}
