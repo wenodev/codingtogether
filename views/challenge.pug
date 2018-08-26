@@ -1,0 +1,111 @@
+doctype html
+head
+  meta(charset-='utf-8')
+  meta(name='viewport', content='width = device-width, initial-scale = 1')
+  meta(name='description', content='')
+  meta(name='author', content='')
+  title CodingTogether
+  link(href='CSS/bootstrap.css', rel='stylesheet')
+  link(href='CSS/bootstrap.min.css', rel='stylesheet')
+  link(href='dashboard.css', rel='stylesheet')
+nav.navbar.navbar-default.navbar-fixed-top
+  .container-fluid
+    .navbar-header
+      button.navbar-toggle(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1', aria-expanded='false')
+        span.sr-only
+        span.icon-bar
+        span.icon-bar
+        span.icon-bar
+      a.navbar-brand(href='index.html') CodingTogether
+    #bs-example-navbar-collpase-1.collapse.navbar-collapse
+      ul.nav.navbar-nav
+        li.active
+          a(href='about.hmtl')
+            | About us 
+            span.sr-only
+        li
+          a(href='practice.html') Practice 
+        li.active
+          a(href='Challenge.html')
+            | Challenge
+            span.sr-only
+        li
+          a(href='study.html')
+            | Study
+            span.sr-only
+        li.active
+          a(href='community.html')
+            | Community 
+            span.sr-only
+      ol.nav.nav-pills.pull-right
+        li.active(role='presentation')
+          a(href='#') Home
+        li(role='presentation')
+          a(href='#') &#xB85C;&#xADF8;&#xC778;
+        li(role='presentation')
+          a(href='#') &#xB9C8;&#xC774;&#xD398;&#xC774;&#xC9C0;
+.container-fluid
+  .row
+    .col-sm-3.col-md-2.sidebar
+      ul.nav.nav-sidebar
+        li
+          a(href='study.html')
+            h2 Challenge
+            span.sr-only (current)
+      ul.nav.nav-sidebar
+        li.active
+          a(href='#')
+            | LV.1
+            span.sr-only (current)
+        li
+          a(href='#') LV.2
+        li
+          a(href='#') LV.3
+        li
+          a(href='#') LV.4
+        li
+          a(href='#') LV.5
+        li
+          a(href='#') LV.6
+        li
+          a(href='#') LV.7
+        li
+          a(href='#') LV.8
+        li
+          a(href='#') LV.9
+        li
+          a(href='#') LV.10
+    .col-sm-9.col-sm-offset-3.col-md-10.col-md-offset-2.main
+      h1.page-header LV.1
+      .row
+        .col-sm-6.col-md-4
+          .thumbnail
+            img(src='images/2.PNG', alt='...')
+            .caption
+              h3 &#xAD6C;&#xAD6C;&#xB2E8; &#xB9CC;&#xB4E4;&#xAE30;
+              p &#xC6B0;&#xB9AC;&#xAC00; &#xC798; &#xC54C;&#xACE0; &#xC788;&#xB294; &#xAD6C;&#xAD6C;&#xB2E8;&#xC744; &#xB2E8; &#xBA87; &#xC904;&#xB85C; &#xB9CC;&#xB4E4; &#xC218; &#xC788;&#xB2E4;!
+              p
+                a.btn.btn-primary(href='#', role='button') &#xC2DC;&#xC791;&#xD558;&#xAE30;
+        .col-sm-6.col-md-4
+          .thumbnail
+            img(src='images/2.PNG', alt='...')
+            .caption
+              h3 &#xACC4;&#xC0B0;&#xAE30; &#xB9CC;&#xB4E4;&#xAE30;
+              p &#xC77C;&#xC0C1;&#xC0DD;&#xD65C;&#xC5D0;&#xC11C; &#xC0AC;&#xC6A9;&#xD558;&#xB294; &#xACC4;&#xC0B0;&#xAE30;&#xB97C; &#xC9C1;&#xC811; &#xB9CC;&#xB4E4;&#xC5B4; &#xBCF4;&#xC790;!
+              p
+                a.btn.btn-primary(href='#', role='button') &#xC2DC;&#xC791;&#xD558;&#xAE30;
+      .row.placeholders
+      script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js')
+      script.
+        window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\\/script>')
+      script(src='js/bootstrap.min.js')
+      // Just to make our placeholder images work. Don't actually copy the next line!
+      script(src='js/vendor/holder.min.js')
+      footer(style='background-color: #000000; color: #ffffff')
+        .container
+          br
+          .row
+            .col-sm-4(style='text - align: center;')
+              h4 Copyright &copy; 2018 CodingTogether
+              h5 &#xC190;&#xC8FC;&#xC6D0; &#xC774;&#xC8FC;&#xD615; &#xC190;&#xC815;&#xD6C8; &#xCD5C;&#xCC2C;&#xC885;
+
