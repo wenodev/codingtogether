@@ -1,10 +1,15 @@
 var fs = require('fs');
 var spawn = require('child_process').spawn;
+var cp = require('child_process');
+var n = cp.fork(`${__dirname}/sub.js`);
 var exec = require('child_process').exec;
 var models = require('../models');
 var async = require('async');
+var member = require('./singleton');
 function compileFunction(lan,path,source,res){
 	var file, compile,run,responseData;
+	var final = false;
+	var cnt=1;
 	var tasks = [
 		function(callback){
 			if(lan=='c')
@@ -13,64 +18,63 @@ function compileFunction(lan,path,source,res){
 				file = path+'Test.java';
 			else if(lan=='python')
 				file = path+'test.py';
-			fs.writeFile(file,source,'utf-8',function(error){});
+			fs.writeFile(file,source,'utf-8',function(err){if(err) throw err;});
 			callback(null,file);
 		},
 		function(file,callback){
-			if(lan=='c')
-				compile = spawn('gcc',[file]);
-			else if(lan=='java')
-				compile = spawn('javac',[file]);	
-			else if(lan=='python')
-				compile = spawn('python3',[file]);
-			console.log('컴파일 완료 여기서 실행파일이 생성됨');
-			compile.stderr.on('data',function(data){
-				callback(true,String(data));
-			});
-			compile.on('close',function(data){
-				if(data==0)
-					setTimeout(callback,1000,null,compile);
-			});
-		},
-		function(compile,callback){
-			if(compile=='err'){
-				callback(null,'err');
-			}
 			if(lan=='c'){
-				run = spawn('./a.out',[]);
-				run.stdout.on('data',function(stdout){
-					callback(null,stdout.toString('utf8'));
-				});
+				compile = exec('gcc test.c',{cwd:'sources'},function(err,stdout,stderr){
+					if(stderr.length==0){
+						var run = spawn('./sources/./a.out',[]);
+						run.stdout.on('data',function(stdout){
+							callback(null,stdout.toString('utf8'));
+						})
+					}		
+					else
+						callback(true,stderr)
+				})
 			}
-			else if(lan=='java')
-				run = exec("java Test",{cwd:'../server_side_javascript/sources'},function(err,stdout,stderr){
-					callback(null,stdout);
-				});
-			else if(lan=='python')
-				run = exec('python3 test.py',{cwd:'../server_side_javascript/sources'},function(err,stdout,stderr){
-					callback(null,stdout);
-				});
-			console.log('여기서 파일을 실행합니다.');
+			else if(lan=='java'){
+				compile = exec('javac Test.java',{cwd:'sources'},function(err,stdout,stderr){
+					if(stderr.length==0) {
+						var run = exec("java Test",{cwd:'sources'},function(err,stdout,stderr){
+							callback(null,stdout);
+						});
+					}
+					else
+						callback(true,stderr)
+				})
+			}
+			else if(lan=='python'){
+				compile = exec('python3 test.py',{cwd:'sources'},function(err,stdout,stderr){
+					if(stderr.length==0) {
+						callback(null,stdout)
+					}
+					else 
+						callback(true,stderr)
+				})
+			}
 		},
 		function(stdout,callback){
-			responseData = {'result':'ok','output':stdout};
-			res.json(responseData);
-			callback(null);
+			callback(null,stdout)
 		}
-	];
+	]
 	async.waterfall(tasks,function(err,msg){
 		if(err){
+			responseData = {'result':'err','output':msg};
+			res.json(responseData);
+		}
+		else{
 			responseData = {'result':'ok','output':msg};
 			res.json(responseData);
-			console.log('err');
-		}
-		else
 			console.log('done');
+		}
 	});
+
 	//DB저장
 	models.Code.create({
 		title: 'test',
-		code: source 
+		code: source
 	}).catch(function(err) {
 		console.error(err);
 	});

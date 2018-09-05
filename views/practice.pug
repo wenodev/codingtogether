@@ -114,8 +114,13 @@ head
 				xhr.send(data);
 				xhr.addEventListener('load',function() {
 				var result = JSON.parse(xhr.responseText);
-				if(result.result !='ok')return;
+				if(result.result !='ok'){
+					chatting('http://localhost:3000/practice_chatting',result.output)
+					document.getElementById('output').value='컴파일 에러';
+				}
+				else{
 					document.getElementById('output').value=result.output;
+				}
 				});
 			}				
 			function chatting(url,val){

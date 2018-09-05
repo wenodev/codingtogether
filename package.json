@@ -26,6 +26,7 @@
     "popper.js": "^1.14.3",
     "pug": "^2.0.3",
     "request": "^2.87.0",
+    "response": "^0.18.0",
     "sequelize": "^4.37.1",
     "shelljs": "^0.8.1",
     "underscore": "^1.8.3",

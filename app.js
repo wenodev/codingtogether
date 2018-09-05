@@ -59,6 +59,7 @@ app.get('/enroll',function(req,res){
 });
 app.post('/enroll_receive',function(req,res){
 	//name,email,nickname,password,confirm
+	console.log(req.body);
 	var info = req.body;
 	validation.enrollValidation(info,res);
 });

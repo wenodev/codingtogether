@@ -1,6 +1,7 @@
 #include<stdio.h>
 int main()
 {
-	printf("asdfasdf");
+  	char *s = "hello world!";
+ 	printf("%c",s);
 	return 0;
 }
